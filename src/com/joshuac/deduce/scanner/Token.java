@@ -13,4 +13,10 @@ public class Token
     {
         this(String.valueOf(data));
     }
+
+    @Override
+    public String toString()
+    {
+        return this.data;
+    }
 }
