@@ -4,6 +4,8 @@ import com.joshuac.deduce.parser.node.Node;
 
 public class ParseTreePrinter
 {
+    private static final String INDENT = "  ";
+
     public static void printParseTree(Node root)
     {
         print(root, 0);
@@ -13,7 +15,7 @@ public class ParseTreePrinter
     {
         for (int i = 0; i < tabs; i++)
         {
-            System.out.print('\t');
+            System.out.print(INDENT);
         }
         System.out.println(node);
         for (Node child : node.getChildren())
