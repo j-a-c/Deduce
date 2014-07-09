@@ -159,7 +159,7 @@ public class SimpleParser implements Parser
             Node adjectiveNode = new AdjectiveNode();
             Node adjectiveTerminal = new TerminalNode(noun);
             adjectiveNode.insertChild(0, adjectiveTerminal);
-            currentNode.insertChild(currentNode.getNumberOfChildren(), adjectiveTerminal);
+            currentNode.insertChild(currentNode.getNumberOfChildren(), adjectiveNode);
             return tokens;
         }
         else
