@@ -7,8 +7,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import util.ParseTreePrinter;
-
 import com.joshuac.deduce.classifier.HardcodedClassifier;
 import com.joshuac.deduce.parser.node.*;
 import com.joshuac.deduce.scanner.Scanner;
@@ -31,8 +29,14 @@ public class SimpleParserTest
     public void emptySentence()
     {
         String sentence = "";
-        Node parseTree = parse(sentence);
+        Node rootNode = parse(sentence);
 
+        assertTrue(rootNode instanceof RootNode);
+        assertTrue(rootNode.getNumberOfChildren() == 1);
+
+        Node sentencesNode = rootNode.getChild(0);
+        assertTrue(sentencesNode instanceof SentencesNode);
+        assertTrue(sentencesNode.getNumberOfChildren() == 0);
     }
 
     @Test
@@ -77,7 +81,6 @@ public class SimpleParserTest
         assertTrue(sentencesNode instanceof SentencesNode);
         assertTrue(sentencesNode.getNumberOfChildren() == 2);
 
-        ParseTreePrinter.printParseTree(rootNode);
     }
 
     private Node parse(String sentence)
