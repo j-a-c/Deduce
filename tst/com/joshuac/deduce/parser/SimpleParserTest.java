@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.joshuac.deduce.Node;
 import com.joshuac.deduce.classifier.HardcodedClassifier;
 import com.joshuac.deduce.parser.node.*;
 import com.joshuac.deduce.scanner.Scanner;

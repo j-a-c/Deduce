@@ -1,5 +1,6 @@
 package com.joshuac.deduce.parser.node;
 
+import com.joshuac.deduce.Node;
 import com.joshuac.deduce.scanner.Token;
 
 public class TerminalNode extends Node

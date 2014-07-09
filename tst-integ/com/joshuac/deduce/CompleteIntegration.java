@@ -7,7 +7,6 @@ import util.ParseTreePrinter;
 import com.joshuac.deduce.classifier.HardcodedClassifier;
 import com.joshuac.deduce.parser.Parser;
 import com.joshuac.deduce.parser.SimpleParser;
-import com.joshuac.deduce.parser.node.Node;
 import com.joshuac.deduce.scanner.Scanner;
 import com.joshuac.deduce.scanner.SimpleScanner;
 import com.joshuac.deduce.scanner.Token;
@@ -17,7 +16,7 @@ public class CompleteIntegration
 
     public static void main(String[] args)
     {
-        String sentences = "The ball is red. The ball is round.";
+        String sentences = "The ball is red. Red is a color. The color of the ball will never change.";
 
         Scanner scanner = new SimpleScanner();
         Parser parser = new SimpleParser(new HardcodedClassifier());

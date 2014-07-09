@@ -1,4 +1,4 @@
-package com.joshuac.deduce.parser.node;
+package com.joshuac.deduce;
 
 import java.util.ArrayList;
 import java.util.List;

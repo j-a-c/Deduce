@@ -3,6 +3,7 @@ package com.joshuac.deduce.parser;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
+import com.joshuac.deduce.Node;
 import com.joshuac.deduce.classifier.Classifier;
 import com.joshuac.deduce.classifier.WordType;
 import com.joshuac.deduce.parser.node.*;

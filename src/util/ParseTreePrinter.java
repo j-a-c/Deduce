@@ -1,6 +1,6 @@
 package util;
 
-import com.joshuac.deduce.parser.node.Node;
+import com.joshuac.deduce.Node;
 
 public class ParseTreePrinter
 {
