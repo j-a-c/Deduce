@@ -1,6 +1,6 @@
 package com.joshuac.deduce.constrainer;
 
-import com.joshuac.deduce.parser.node.Node;
+import com.joshuac.deduce.Node;
 
 public interface Constrainer
 {
