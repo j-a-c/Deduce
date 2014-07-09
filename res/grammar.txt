@@ -14,3 +14,9 @@ Noun			= [noun] 							=> 	<NounNode>
 Verb 			= [verb] 							=> 	<VerbNode>
 Adjective 		= [adjective] 						=> 	<AdjectiveNode>
 Punctuation 	= [punctuation]						=> 	<PunctuationNode>
+
+
+Tree Format:
+0) RootNode
+    0) ConceptsNode
+    1) SentencesNode
