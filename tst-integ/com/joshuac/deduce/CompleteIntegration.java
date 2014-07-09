@@ -17,7 +17,7 @@ public class CompleteIntegration
 
     public static void main(String[] args)
     {
-        String sentences = "The ball is red. The ball is round.";
+        String sentences = "The ball is red. Red is a color. The ball will never change color.";
 
         Scanner scanner = new SimpleScanner();
         Parser parser = new SimpleParser(new HardcodedClassifier());

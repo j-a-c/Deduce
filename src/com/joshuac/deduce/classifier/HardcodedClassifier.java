@@ -23,7 +23,7 @@ public class HardcodedClassifier implements Classifier
         case ".":
             return WordType.Period;
         default:
-            throw new RuntimeException("Word not recognized! : " + token.data);
+            return WordType.Unknown;
         }
     }
 }
