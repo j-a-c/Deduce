@@ -125,7 +125,7 @@ public class SimpleParser implements Parser
                 unparsedTokens = parseNoun(tokens, nounPhraseNode);
                 break;
             default:
-                throw new ParseException("Cannot parse noun phrase.");
+                throw new ParseException(tokens.get(0), currentWordType);
             }
             currentNode.insertChild(currentNode.getNumberOfChildren(), nounPhraseNode);
             return unparsedTokens;
@@ -151,7 +151,7 @@ public class SimpleParser implements Parser
         }
         else
         {
-            throw new ParseException("Expected word is not a adjective. : " + tokens.get(0));
+            throw new ParseException(WordType.Adjective, tokens.get(0), currentWordType);
         }
     }
 
@@ -170,7 +170,7 @@ public class SimpleParser implements Parser
         }
         else
         {
-            throw new ParseException("Expected word is not a verb.");
+            throw new ParseException(WordType.Verb, tokens.get(0), currentWordType);
         }
     }
 
@@ -189,7 +189,7 @@ public class SimpleParser implements Parser
         }
         else
         {
-            throw new ParseException("Expected word is not punctuation. " + tokens.get(0));
+            throw new ParseException(WordType.Period, tokens.get(0), currentWordType);
         }
     }
 
@@ -208,7 +208,7 @@ public class SimpleParser implements Parser
         }
         else
         {
-            throw new ParseException("Expected word is not a noun. " + tokens.get(0));
+            throw new ParseException(WordType.Noun, tokens.get(0), currentWordType);
         }
     }
 
@@ -227,7 +227,7 @@ public class SimpleParser implements Parser
         }
         else
         {
-            throw new ParseException("Expected word is not an adjective. " + tokens.get(0));
+            throw new ParseException(WordType.Adjective, tokens.get(0), currentWordType);
         }
     }
 
