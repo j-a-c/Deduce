@@ -1,0 +1,72 @@
+##############
+# The nine parts of speech
+##############
+Articles, nouns, pronouns, adjectives, verbs, adverbs, conjunctions, prepositions, and interjections. 
+A word of caution, however, a word can be more than one part of speech!
+
+1. Articles
+
+2. Nouns
+	- person, place, thing, idea
+	- can be proper nouns or common nouns
+	- can be gerunds
+		- Running (N) is good for you.
+		- My crying (N) upset him.
+
+3. Pronouns (at least 9 types!)
+	- word that replaces a noun; eliminates need for repetition (constrain this?)
+	- Emma (antecedent) talked to her (pronoun) child
+	- 1) Personal
+		- Singular: I, me, you, she, her, he, him, it
+		- Plural: we, us, you, they, them 
+	- 2) Possessive - indicate possession
+		- Singular: my, mine, your, yours, hers, his, its 
+		- Plural: yours, ours, theirs
+	- 3) Relflexive
+		- Singular: myself, yourself, himself, herself, itself 
+		- Plural: ourselves, yourselves, themselves
+	- 6) Indefinite
+		- All, another, any, anybody, anyone, anything, both, each, either, everybody, everyone, everything, 
+		- few, many, neither, nobody, none, no one, nothing, one, several, some, somebody, someone, something
+			- (Many) believe that UFO’s exist, but (nobody) can prove it. 
+			- (No one) can be sure if aliens really exist, but only (few) wonder if Elvis is still alive. 
+	- 7) Demonstrative - point towards nouns
+		- this, that, these those
+	- 8) Interrogative - introduce questions
+		Who, Whom, Whose, Which, What
+			- (What) are you doing?
+	- 9) Relative - introduce dependent clauses and refers to a person or thing already mentioned in the sentence (i.e. the antecedent). 
+		- Who, whoever, whom, whomever, whose, which, that
+			- The English that we learn in class will help us pass English 1101. 
+			- 'that we learn in class' is the adjective clause that describes English. And, 'that' is the relative pronoun
+
+4. Adjectives - modifies (describes) a noun or pronoun
+
+5. Verbs
+
+6. Adverbs 
+
+7. Conjunctions
+
+8. Prepositions
+
+9. Interjections
+
+
+
+##############
+# Sample tagged sentences.
+##############
+
+Yesterday Jon said, "Today will be sunny".
+
+
+[Noun] [verb]  [items in series] 
+			   [ list noun , ]   (replace with noun phrase?)
+Josh   likes   cars, boats, and planes.
+
+To make her famous muffins, Paulette bought fresh broccoli, baker's chocolate, flour, sugar, and eggs. 
+(Broccoli, chocolate, flour, sugar and eggs = all nouns.)
+
+After Chad clutched his heart, swooned, and fell to the floor, Mrs. Borglum nudged him with her foot, ordering him to the front of the class to make his
+(Clutched, swooned, and fell = all verbs.)
