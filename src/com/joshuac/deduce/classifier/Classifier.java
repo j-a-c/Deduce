@@ -4,5 +4,24 @@ import com.joshuac.deduce.scanner.Token;
 
 public interface Classifier
 {
-    public WordType classify(Token token);
+    public boolean isArticle(Token token);
+
+    public boolean isNoun(Token token);
+
+    public boolean isPronoun(Token token);
+
+    public boolean isAdjective(Token token);
+
+    public boolean isVerb(Token token);
+
+    public boolean isAdverb(Token token);
+
+    public boolean isConjunction(Token token);
+
+    public boolean isPreposition(Token token);
+
+    public boolean isInterjection(Token token);
+
+    public boolean isPunctuation(Token token);
+
 }

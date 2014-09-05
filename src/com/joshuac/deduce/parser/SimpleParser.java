@@ -108,32 +108,43 @@ public class SimpleParser implements Parser
 
     private List<Token> parseNounPhrase(List<Token> tokens, Node currentNode) throws ParseException
     {
-        try
+
+        Node nounPhraseNode = new NounPhraseNode();
+
+        Token currentToken = tokens.get(0);
+        List<Token> unparsedTokens;
+
+        if (classifier.isArticle(currentToken))
         {
-            Node nounPhraseNode = new NounPhraseNode();
-
-            WordType currentWordType = classifier.classify(tokens.get(0));
-            List<Token> unparsedTokens;
-
-            switch (currentWordType)
+            try
             {
-            case Determiner:
                 unparsedTokens = tokens.subList(1, tokens.size());
                 unparsedTokens = parseNoun(unparsedTokens, nounPhraseNode);
-                break;
-            case Noun:
-                unparsedTokens = parseNoun(tokens, nounPhraseNode);
-                break;
-            default:
-                throw new ParseException(tokens.get(0), currentWordType);
+                currentNode.insertChild(currentNode.getNumberOfChildren(), nounPhraseNode);
+                return unparsedTokens;
             }
-            currentNode.insertChild(currentNode.getNumberOfChildren(), nounPhraseNode);
-            return unparsedTokens;
+            catch (ParseException parseException)
+            {
+                // Try next case.
+            }
         }
-        catch (ParseException ex)
+
+        if (classifier.isNoun(currentToken))
         {
-            throw ex;
+            try
+            {
+                unparsedTokens = parseNoun(tokens, nounPhraseNode);
+                currentNode.insertChild(currentNode.getNumberOfChildren(), nounPhraseNode);
+                return unparsedTokens;
+            }
+            catch (ParseException parseException)
+            {
+                // Try next case.
+            }
         }
+
+        throw new ParseException(tokens.get(0), WordType.UNKNOWN);
+
     }
 
     private List<Token> parseAdjectivePhrase(List<Token> tokens, Node currentNode)
@@ -141,25 +152,31 @@ public class SimpleParser implements Parser
     {
         Node adjectivePhraseNode = new AdjectivePhraseNode();
 
-        WordType currentWordType = classifier.classify(tokens.get(0));
-        if (currentWordType == WordType.Adjective)
+        Token currentToken = tokens.get(0);
+        if (classifier.isAdjective(currentToken))
         {
-            List<Token> unparsedTokens = parseAdjective(tokens, adjectivePhraseNode);
+            try
+            {
+                List<Token> unparsedTokens = parseAdjective(tokens, adjectivePhraseNode);
+                currentNode.insertChild(currentNode.getNumberOfChildren(), adjectivePhraseNode);
+                return unparsedTokens;
+            }
+            catch (ParseException parException)
+            {
+                // Try next case.
+            }
+        }
 
-            currentNode.insertChild(currentNode.getNumberOfChildren(), adjectivePhraseNode);
-            return unparsedTokens;
-        }
-        else
-        {
-            throw new ParseException(WordType.Adjective, tokens.get(0), currentWordType);
-        }
+        throw new ParseException(currentToken, WordType.UNKNOWN);
+
     }
 
     private List<Token> parseVerb(List<Token> tokens, Node currentNode) throws ParseException
     {
-        WordType currentWordType = classifier.classify(tokens.get(0));
-        if (currentWordType == WordType.Verb)
+        Token currentToken = tokens.get(0);
+        if (classifier.isVerb(currentToken))
         {
+
             Token verb = tokens.get(0);
             List<Token> unparsedTokens = tokens.subList(1, tokens.size());
             Node verbNode = new VerbNode();
@@ -167,18 +184,18 @@ public class SimpleParser implements Parser
             verbNode.insertChild(0, verbTerminal);
             currentNode.insertChild(currentNode.getNumberOfChildren(), verbNode);
             return unparsedTokens;
+
         }
-        else
-        {
-            throw new ParseException(WordType.Verb, tokens.get(0), currentWordType);
-        }
+
+        throw new ParseException(currentToken, WordType.UNKNOWN);
+
     }
 
     private List<Token> parsePunctuation(List<Token> tokens, Node currentNode)
             throws ParseException
     {
-        WordType currentWordType = classifier.classify(tokens.get(0));
-        if (currentWordType == WordType.Period)
+        Token currentToken = tokens.get(0);
+        if (classifier.isPunctuation(currentToken))
         {
             Token period = tokens.remove(0);
             Node punctuationNode = new PunctuationNode();
@@ -187,16 +204,15 @@ public class SimpleParser implements Parser
             currentNode.insertChild(currentNode.getNumberOfChildren(), punctuationNode);
             return tokens;
         }
-        else
-        {
-            throw new ParseException(WordType.Period, tokens.get(0), currentWordType);
-        }
+
+        throw new ParseException(currentToken, WordType.UNKNOWN);
+
     }
 
     private List<Token> parseNoun(List<Token> tokens, Node currentNode) throws ParseException
     {
-        WordType currentWordType = classifier.classify(tokens.get(0));
-        if (currentWordType == WordType.Noun)
+        Token currentToken = tokens.get(0);
+        if (classifier.isNoun(currentToken))
         {
             Token noun = tokens.get(0);
             List<Token> unparsedTokens = tokens.subList(1, tokens.size());
@@ -206,16 +222,15 @@ public class SimpleParser implements Parser
             currentNode.insertChild(currentNode.getNumberOfChildren(), nounNode);
             return unparsedTokens;
         }
-        else
-        {
-            throw new ParseException(WordType.Noun, tokens.get(0), currentWordType);
-        }
+
+        throw new ParseException(currentToken, WordType.UNKNOWN);
+
     }
 
     private List<Token> parseAdjective(List<Token> tokens, Node currentNode) throws ParseException
     {
-        WordType currentWordType = classifier.classify(tokens.get(0));
-        if (currentWordType == WordType.Adjective)
+        Token currentToken = tokens.get(0);
+        if (classifier.isAdjective(currentToken))
         {
             Token noun = tokens.get(0);
             List<Token> unparsedTokens = tokens.subList(1, tokens.size());
@@ -225,19 +240,28 @@ public class SimpleParser implements Parser
             currentNode.insertChild(currentNode.getNumberOfChildren(), adjectiveNode);
             return unparsedTokens;
         }
-        else
-        {
-            throw new ParseException(WordType.Adjective, tokens.get(0), currentWordType);
-        }
+
+        throw new ParseException(currentToken, WordType.UNKNOWN);
+
     }
 
     private boolean isEndingPunctuation(Token token)
     {
-        WordType currentWordType = classifier.classify(token);
+        // TODO Abstract into classifier using WordTypes?
+        // WordType currentWordType = classifier.classify(token);
+        //
+        // switch (currentWordType)
+        // {
+        // case PERIOD:
+        // return true;
+        // default:
+        // return false;
+        // }
 
-        switch (currentWordType)
+        switch (token.data)
         {
-        case Period:
+        case ("."):
+        case ("?"):
             return true;
         default:
             return false;

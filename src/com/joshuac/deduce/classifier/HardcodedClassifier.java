@@ -6,24 +6,114 @@ public class HardcodedClassifier implements Classifier
 {
 
     @Override
-    public WordType classify(Token token)
+    public boolean isArticle(Token token)
     {
         switch (token.data)
         {
         case "The":
-            return WordType.Determiner;
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isNoun(Token token)
+    {
+        switch (token.data)
+        {
         case "ball":
         case "color":
-            return WordType.Noun;
-        case "is":
-            return WordType.Verb;
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isPronoun(Token token)
+    {
+        switch (token.data)
+        {
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isAdjective(Token token)
+    {
+        switch (token.data)
+        {
         case "red":
         case "round":
-            return WordType.Adjective;
-        case ".":
-            return WordType.Period;
+            return true;
         default:
-            return WordType.Unknown;
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isVerb(Token token)
+    {
+        switch (token.data)
+        {
+        case "is":
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isAdverb(Token token)
+    {
+        switch (token.data)
+        {
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isConjunction(Token token)
+    {
+        switch (token.data)
+        {
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isPreposition(Token token)
+    {
+        switch (token.data)
+        {
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isInterjection(Token token)
+    {
+        switch (token.data)
+        {
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isPunctuation(Token token)
+    {
+        switch (token.data)
+        {
+        case ".":
+            return true;
+        default:
+            return false;
         }
     }
 }

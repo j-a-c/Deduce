@@ -7,7 +7,7 @@ Rules 													Node Type in Parse Tree
 
 Sentence 		= VerbPhrase Punctuation 			=>	<SentenceNode>
 VerbPhrase 		= NounPhrase Verb AdjectivePhrase	=> 	<VerbPhraseNode>
-NounPhrase 		= ~Determiner Noun
+NounPhrase 		= ~Article Noun
 				= Noun								=> 	<NounPhraseNode>
 AdjectivePhrase	= Adjective							=> 	<AdjectivePhraseNode>
 Noun			= [noun] 							=> 	<NounNode>

@@ -1,6 +1,7 @@
 package com.joshuac.deduce.classifier;
 
+// TODO Delete this and replace with punctuation types?
 public enum WordType
 {
-    Determiner, Noun, Verb, Period, Adjective, Unknown;
+    ARTICLE, NOUN, VERB, PERIOD, ADJECTIVE, UNKNOWN;
 }
