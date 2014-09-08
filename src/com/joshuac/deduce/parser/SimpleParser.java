@@ -75,7 +75,7 @@ public class SimpleParser implements Parser
             int newIndex = currentNode.getNumberOfChildren();
             Node sentenceNode = new SentenceNode();
 
-            List<Token> unparsedTokens = parseVerbPhrase(tokens, sentenceNode);
+            List<Token> unparsedTokens = parseClause(tokens, sentenceNode);
             unparsedTokens = parsePunctuation(unparsedTokens, sentenceNode);
 
             currentNode.insertChild(newIndex, sentenceNode);
@@ -87,17 +87,16 @@ public class SimpleParser implements Parser
         }
     }
 
-    private List<Token> parseVerbPhrase(List<Token> tokens, Node currentNode) throws ParseException
+    private List<Token> parseClause(List<Token> tokens, Node currentNode) throws ParseException
     {
         try
         {
-            Node verbPhraseNode = new VerbPhraseNode();
+            Node clauseNode = new ClauseNode();
 
-            List<Token> unparsedTokens = parseNounPhrase(tokens, verbPhraseNode);
-            unparsedTokens = parseVerb(unparsedTokens, verbPhraseNode);
-            unparsedTokens = parseAdjectivePhrase(unparsedTokens, verbPhraseNode);
+            List<Token> unparsedTokens = parseNounPhrase(tokens, clauseNode);
+            unparsedTokens = parseVerbPhrase(unparsedTokens, clauseNode);
 
-            currentNode.insertChild(0, verbPhraseNode);
+            currentNode.insertChild(0, clauseNode);
             return unparsedTokens;
         }
         catch (ParseException ex)
@@ -156,6 +155,44 @@ public class SimpleParser implements Parser
 
     }
 
+    private List<Token> parseVerbPhrase(List<Token> tokens, Node currentNode) throws ParseException
+    {
+        Node verbPhraseNode = new VerbPhraseNode();
+
+        Token currentToken = tokens.get(0);
+        if (classifier.isIntransitiveVerb(currentToken))
+        {
+            try
+            {
+                List<Token> unparsedTokens = parseVerb(tokens, verbPhraseNode);
+                currentNode.insertChild(currentNode.getNumberOfChildren(), verbPhraseNode);
+                return unparsedTokens;
+            }
+            catch (ParseException parseException)
+            {
+                // Try next case.
+            }
+        }
+
+        if (classifier.isLinkingVerb(currentToken))
+        {
+            try
+            {
+                List<Token> unparsedTokens = parseVerb(tokens, verbPhraseNode);
+                unparsedTokens = parseAdjectivePhrase(unparsedTokens, verbPhraseNode);
+                currentNode.insertChild(currentNode.getNumberOfChildren(), verbPhraseNode);
+                return unparsedTokens;
+            }
+            catch (ParseException parseException)
+            {
+                // Try next case.
+            }
+        }
+
+        throw new ParseException(currentToken, WordType.UNKNOWN);
+
+    }
+
     private List<Token> parseAdjectivePhrase(List<Token> tokens, Node currentNode)
             throws ParseException
     {
@@ -170,7 +207,7 @@ public class SimpleParser implements Parser
                 currentNode.insertChild(currentNode.getNumberOfChildren(), adjectivePhraseNode);
                 return unparsedTokens;
             }
-            catch (ParseException parException)
+            catch (ParseException parseException)
             {
                 // Try next case.
             }

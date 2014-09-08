@@ -24,6 +24,7 @@ public class HardcodedClassifier implements Classifier
         {
         case "ball":
         case "color":
+        case "cars":
             return true;
         default:
             return false;
@@ -59,6 +60,7 @@ public class HardcodedClassifier implements Classifier
         switch (token.data)
         {
         case "is":
+        case "race":
             return true;
         default:
             return false;
@@ -111,6 +113,30 @@ public class HardcodedClassifier implements Classifier
         switch (token.data)
         {
         case ".":
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isLinkingVerb(Token token)
+    {
+        switch (token.data)
+        {
+        case "is":
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isIntransitiveVerb(Token token)
+    {
+        switch (token.data)
+        {
+        case "race":
             return true;
         default:
             return false;

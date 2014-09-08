@@ -24,4 +24,10 @@ public interface Classifier
 
     public boolean isPunctuation(Token token);
 
+    // Verb Types
+
+    public boolean isLinkingVerb(Token token);
+
+    public boolean isIntransitiveVerb(Token token);
+
 }

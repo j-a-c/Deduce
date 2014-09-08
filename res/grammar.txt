@@ -6,23 +6,26 @@ Nodes marks @ are not yet defined.
 
 Rules 													Node Type in Parse Tree
 
-Sentence 		= VerbPhrase Punctuation 			=>	<SentenceNode>
-VerbPhrase 		= NounPhrase Verb AdjectivePhrase	=> 	<VerbPhraseNode>
-NounPhrase 		= Determiner Noun
-				= Noun								=> 	<NounPhraseNode>
-AdjectivePhrase	= Adjective							=> 	<AdjectivePhraseNode>
-Determiner 		= Article
-				= @Demonstrative
-				= @Possessives
-				= @Quantifiers
-				= @Numerals
-				= @Distributives
-				= @Interrogatives					=> 	<DeterminerNode>
-Article 		= [article]							=> 	<ArticleNode>
-Noun			= [noun] 							=> 	<NounNode>
-Verb 			= [verb] 							=> 	<VerbNode>
-Adjective 		= [adjective] 						=> 	<AdjectiveNode>
-Punctuation 	= [punctuation]						=> 	<PunctuationNode>
+Sentence 			= Clause Punctuation 				=>	<SentenceNode>
+Clause 				= NounPhrase VerbPhrase
+VerbPhrase 			= IntransitiveVerb							
+					= LinkingVerb AdjectivePhrase		=> 	<VerbPhraseNode>
+NounPhrase 			= Determiner Noun
+					= Noun								=> 	<NounPhraseNode>
+AdjectivePhrase		= Adjective							=> 	<AdjectivePhraseNode>
+Determiner 			= Article
+					= @Demonstrative
+					= @Possessives
+					= @Quantifiers
+					= @Numerals
+					= @Distributives
+					= @Interrogatives					=> 	<DeterminerNode>
+Article 			= [article]							=> 	<ArticleNode>
+Noun				= [noun] 							=> 	<NounNode>
+MainVerb 			= [verb] 							=> 	<VerbNode>
+IntransitiveVerb	= [verb] 							=> 	<VerbNode>
+Adjective 			= [adjective] 						=> 	<AdjectiveNode>
+Punctuation 		= [punctuation]						=> 	<PunctuationNode>
 
 
 Tree Format:

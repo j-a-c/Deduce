@@ -58,9 +58,11 @@ public class SimpleParserTest
         assertTrue(sentenceNode instanceof SentenceNode);
         assertTrue(sentenceNode.getNumberOfChildren() == 2);
 
-        Node verbPhraseNode = sentenceNode.getChild(0);
-        assertTrue(verbPhraseNode instanceof VerbPhraseNode);
-        assertTrue(verbPhraseNode.getNumberOfChildren() == 3);
+        Node clauseNode = sentenceNode.getChild(0);
+        assertTrue(clauseNode instanceof ClauseNode);
+        assertTrue(clauseNode.getNumberOfChildren() == 2);
+        assertTrue(clauseNode.getChild(0) instanceof NounPhraseNode);
+        assertTrue(clauseNode.getChild(1) instanceof VerbPhraseNode);
 
         Node punctuationNode = sentenceNode.getChild(1);
         assertTrue(punctuationNode instanceof PunctuationNode);
@@ -82,6 +84,21 @@ public class SimpleParserTest
         assertTrue(sentencesNode instanceof SentencesNode);
         assertTrue(sentencesNode.getNumberOfChildren() == 2);
 
+    }
+
+    @Test
+    public void intransitiveVerb()
+    {
+        String sentence = "The cars race.";
+
+        Node rootNode = parse(sentence);
+
+        assertTrue(rootNode instanceof RootNode);
+        assertTrue(rootNode.getNumberOfChildren() == 1);
+
+        Node sentencesNode = rootNode.getChild(0);
+        assertTrue(sentencesNode instanceof SentencesNode);
+        assertTrue(sentencesNode.getNumberOfChildren() == 1);
     }
 
     private Node parse(String sentence)
