@@ -72,21 +72,40 @@ public class SimpleParser implements Parser
 
     private List<Token> parseSentence(List<Token> tokens, Node currentNode) throws ParseException
     {
+        // Sentence = Clause EndingPunctuation
         try
         {
-            int newIndex = currentNode.getNumberOfChildren();
             Node sentenceNode = new SentenceNode();
 
             List<Token> unparsedTokens = parseClause(tokens, sentenceNode);
             unparsedTokens = parseEndingPunctuation(unparsedTokens, sentenceNode);
 
-            currentNode.insertChild(newIndex, sentenceNode);
+            currentNode.insertChild(currentNode.getNumberOfChildren(), sentenceNode);
             return unparsedTokens;
         }
-        catch (ParseException ex)
+        catch (ParseException parseException)
         {
-            throw ex;
+            // Try next case.
         }
+
+        // Sentence = Clause SubordinateClause EndingPunctuation
+        try
+        {
+            Node sentenceNode = new SentenceNode();
+
+            List<Token> unparsedTokens = parseClause(tokens, sentenceNode);
+            unparsedTokens = parseSubordinateClause(unparsedTokens, sentenceNode);
+            unparsedTokens = parseEndingPunctuation(unparsedTokens, sentenceNode);
+
+            currentNode.insertChild(currentNode.getNumberOfChildren(), sentenceNode);
+            return unparsedTokens;
+        }
+        catch (ParseException parseException)
+        {
+
+        }
+
+        throw new ParseException(tokens.get(0), WordType.UNKNOWN);
     }
 
     private List<Token> parseClause(List<Token> tokens, Node currentNode) throws ParseException
@@ -98,20 +117,58 @@ public class SimpleParser implements Parser
             List<Token> unparsedTokens = parseNounPhrase(tokens, clauseNode);
             unparsedTokens = parseVerbPhrase(unparsedTokens, clauseNode);
 
-            currentNode.insertChild(0, clauseNode);
+            currentNode.insertChild(currentNode.getNumberOfChildren(), clauseNode);
             return unparsedTokens;
         }
-        catch (ParseException ex)
+        catch (ParseException parseException)
         {
-            throw ex;
+            throw parseException;
         }
+    }
+
+    private List<Token> parseSubordinateClause(List<Token> tokens, Node currentNode)
+            throws ParseException
+    {
+        try
+        {
+            Node subordinateClauseNode = new SubordinateClauseNode();
+
+            List<Token> unparsedTokens = parseSubordinateConjuction(tokens, subordinateClauseNode);
+            unparsedTokens = parseNounPhrase(unparsedTokens, subordinateClauseNode);
+            unparsedTokens = parseVerbPhrase(unparsedTokens, subordinateClauseNode);
+
+            currentNode.insertChild(currentNode.getNumberOfChildren(), subordinateClauseNode);
+            return unparsedTokens;
+        }
+        catch (ParseException parseException)
+        {
+            throw parseException;
+        }
+
+    }
+
+    private List<Token> parseSubordinateConjuction(List<Token> tokens, Node currentNode)
+            throws ParseException
+    {
+        Token currentToken = tokens.get(0);
+
+        if (classifier.isSubordinateConjunction(currentToken))
+        {
+            List<Token> unparsedTokens = tokens.subList(1, tokens.size());
+
+            Node subordinateConjunctionNode = new SubordinateConjunctionNode();
+            Node subordinateConjunctionTerminal = new TerminalNode(currentToken);
+            subordinateConjunctionNode.insertChild(0, subordinateConjunctionTerminal);
+
+            currentNode.insertChild(currentNode.getNumberOfChildren(), subordinateConjunctionNode);
+            return unparsedTokens;
+        }
+
+        throw new ParseException(currentToken, WordType.UNKNOWN);
     }
 
     private List<Token> parseNounPhrase(List<Token> tokens, Node currentNode) throws ParseException
     {
-
-        Node nounPhraseNode = new NounPhraseNode();
-
         Token currentToken = tokens.get(0);
         List<Token> unparsedTokens;
 
@@ -119,15 +176,17 @@ public class SimpleParser implements Parser
         {
             try
             {
-                unparsedTokens = tokens.subList(1, tokens.size());
-                unparsedTokens = parseNoun(unparsedTokens, nounPhraseNode);
+                Node nounPhraseNode = new NounPhraseNode();
 
                 DeterminerNode determinerNode = new DeterminerNode();
                 ArticleNode articleNode = new ArticleNode();
                 articleNode.insertChild(0, new TerminalNode(currentToken));
                 determinerNode.insertChild(0, articleNode);
-
                 nounPhraseNode.insertChild(0, determinerNode);
+
+                unparsedTokens = tokens.subList(1, tokens.size());
+                unparsedTokens = parseNoun(unparsedTokens, nounPhraseNode);
+
                 currentNode.insertChild(currentNode.getNumberOfChildren(), nounPhraseNode);
                 return unparsedTokens;
             }
@@ -143,6 +202,8 @@ public class SimpleParser implements Parser
         {
             try
             {
+                Node nounPhraseNode = new NounPhraseNode();
+
                 unparsedTokens = parseNoun(tokens, nounPhraseNode);
                 currentNode.insertChild(currentNode.getNumberOfChildren(), nounPhraseNode);
                 return unparsedTokens;
@@ -227,9 +288,11 @@ public class SimpleParser implements Parser
 
             Token verb = tokens.get(0);
             List<Token> unparsedTokens = tokens.subList(1, tokens.size());
+
             Node verbNode = new VerbNode();
             Node verbTerminal = new TerminalNode(verb);
             verbNode.insertChild(0, verbTerminal);
+
             currentNode.insertChild(currentNode.getNumberOfChildren(), verbNode);
             return unparsedTokens;
 
@@ -246,9 +309,11 @@ public class SimpleParser implements Parser
         if (classifier.isEndingPunctuation(currentToken))
         {
             Token period = tokens.remove(0);
+
             Node endingPunctuationNode = new EndingPunctuationNode();
             Node periodTerminal = new TerminalNode(period);
             endingPunctuationNode.insertChild(0, periodTerminal);
+
             currentNode.insertChild(currentNode.getNumberOfChildren(), endingPunctuationNode);
             return tokens;
         }
@@ -264,9 +329,11 @@ public class SimpleParser implements Parser
         {
             Token noun = tokens.get(0);
             List<Token> unparsedTokens = tokens.subList(1, tokens.size());
+
             Node nounNode = new NounNode();
             Node nounTerminal = new TerminalNode(noun);
             nounNode.insertChild(0, nounTerminal);
+
             currentNode.insertChild(currentNode.getNumberOfChildren(), nounNode);
             return unparsedTokens;
         }
@@ -282,9 +349,11 @@ public class SimpleParser implements Parser
         {
             Token noun = tokens.get(0);
             List<Token> unparsedTokens = tokens.subList(1, tokens.size());
+
             Node adjectiveNode = new AdjectiveNode();
             Node adjectiveTerminal = new TerminalNode(noun);
             adjectiveNode.insertChild(0, adjectiveTerminal);
+
             currentNode.insertChild(currentNode.getNumberOfChildren(), adjectiveNode);
             return unparsedTokens;
         }

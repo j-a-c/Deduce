@@ -30,6 +30,10 @@ public interface Classifier
 
     public boolean isIntransitiveVerb(Token token);
 
+    // Conjunction Types
+
+    public boolean isSubordinateConjunction(Token token);
+
     // Punctuation Types
 
     public boolean isEndingPunctuation(Token token);

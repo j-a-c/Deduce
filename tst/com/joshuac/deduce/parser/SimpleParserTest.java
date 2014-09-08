@@ -40,6 +40,8 @@ public class SimpleParserTest
         assertTrue(sentencesNode.getNumberOfChildren() == 0);
     }
 
+    // TODO Break down all these sentences completely!
+
     @Test
     public void singleSentence()
     {
@@ -99,6 +101,28 @@ public class SimpleParserTest
         Node sentencesNode = rootNode.getChild(0);
         assertTrue(sentencesNode instanceof SentencesNode);
         assertTrue(sentencesNode.getNumberOfChildren() == 1);
+    }
+
+    @Test
+    public void clauseSubordinateClauseEndingPunctuation()
+    {
+        String sentence = "The ball is red when the cars race.";
+
+        Node rootNode = parse(sentence);
+
+        assertTrue(rootNode instanceof RootNode);
+        assertTrue(rootNode.getNumberOfChildren() == 1);
+
+        Node sentencesNode = rootNode.getChild(0);
+        assertTrue(sentencesNode instanceof SentencesNode);
+        assertTrue(sentencesNode.getNumberOfChildren() == 1);
+
+        Node sentenceNode = sentencesNode.getChild(0);
+        assertTrue(sentenceNode.getNumberOfChildren() == 3);
+
+        assertTrue(sentenceNode.getChild(0) instanceof ClauseNode);
+        assertTrue(sentenceNode.getChild(1) instanceof SubordinateClauseNode);
+        assertTrue(sentenceNode.getChild(2) instanceof EndingPunctuationNode);
     }
 
     private Node parse(String sentence)

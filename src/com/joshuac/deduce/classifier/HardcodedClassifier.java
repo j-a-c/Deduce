@@ -10,6 +10,7 @@ public class HardcodedClassifier implements Classifier
     {
         switch (token.data)
         {
+        case "the":
         case "The":
             return true;
         default:
@@ -23,8 +24,8 @@ public class HardcodedClassifier implements Classifier
         switch (token.data)
         {
         case "ball":
-        case "color":
         case "cars":
+        case "color":
             return true;
         default:
             return false;
@@ -61,6 +62,7 @@ public class HardcodedClassifier implements Classifier
         {
         case "is":
         case "race":
+        case "rolls":
             return true;
         default:
             return false;
@@ -150,6 +152,22 @@ public class HardcodedClassifier implements Classifier
         {
         case ("."):
         case ("?"):
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isSubordinateConjunction(Token token)
+    {
+        switch (token.data)
+        {
+        case ("when"):
+        case ("whenever"):
+        case ("where"):
+        case ("wherever"):
+        case ("whether"):
             return true;
         default:
             return false;
