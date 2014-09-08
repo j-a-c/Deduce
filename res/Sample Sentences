@@ -150,6 +150,21 @@ A word of caution, however, a word can be more than one part of speech!
 
 
 ##############
+# Phrasal Categories.
+##############
+
+CATEGORY 			LABEL 	EXAMPLE
+clause 				Clause 	she saw something in there 
+verb phrase 		VP 		saw something in there
+noun phrase 		NP 		this clear case of dedication to duty 
+nominal 			Nom 	clear case of dedication to duty
+adjective phrase 	AdjP 	very eager for further news
+adverb phrase 		AdvP 	quite separately from this issue
+preposition phrase 	PP 		right out of the area 
+determinative phrase DP 	almost ever
+
+
+##############
 # Phrase Breakdown.
 ##############
 
