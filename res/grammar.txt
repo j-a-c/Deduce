@@ -1,11 +1,16 @@
 Grammar for parsers.
 
+
+Grammar notation
+====================================================================================================================
 All [leaves] are TerminalNodes.
 Nonterminals marked with ~ are not included in the parse tree.
 Nodes marks @ are not yet defined in the grammar.
 Nodes marks % are not yet implemented in the parser.
 
+
 Pattern 		Explanation
+====================================================================================================================
 (?=pattern) 	is a positive look-ahead assertion
 (?!pattern) 	is a negative look-ahead assertion
 (?<=pattern) 	is a positive look-behind assertion
@@ -16,14 +21,14 @@ pattern+		matches one or more
 
 
 Rules 																					Node Type in Parse Tree
-
+====================================================================================================================
 Sentence 					= Clause EndingPunctuation
 							= Clause SubordinateClause EndingPunctuation
 							% SubordinateClause @Comma Clause EndingPunctuation			=>	<SentenceNode>
 Clause 						= NounPhrase VerbPhrase										=>  <ClauseNode>
 SubordinateClause 			= SubordinateConjunction NounPhrase VerbPhrase 				
 							% ReleativePronoun NounPhrase Verb
-							% @AdverbPhrase NounPhrase Verb 								=>  <SubordinateClause>
+							% AdverbPhrase NounPhrase Verb 								=>  <SubordinateClause>
 VerbPhrase 					= IntransitiveVerb							
 							= LinkingVerb AdjectivePhrase								=> 	<VerbPhraseNode>
 NounPhrase 					= Determiner Noun Appositive?
@@ -31,6 +36,7 @@ NounPhrase 					= Determiner Noun Appositive?
 Appositive 					% Comma NounPhrase Comma									
 							% Comma NounPhrase (?=EndingPunctuation) 					=>  <AppositiveNode>
 AdjectivePhrase				= Adjective													=> 	<AdjectivePhraseNode>
+AdverbPhrase 				% Adverb													=> 	<AdverbPhrase>
 Determiner 					= Article
 							= @Demonstrative
 							= @Possessives
@@ -43,6 +49,7 @@ Noun						= [noun] 													=> 	<NounNode>
 MainVerb 					= [verb] 													=> 	<VerbNode>
 IntransitiveVerb			= [verb] 													=> 	<VerbNode>
 Adjective 					= [adjective] 												=> 	<AdjectiveNode>
+Adverb 						= [adverb] 													=> 	<AdverbNode>
 SubordinateConjunction 		= [conjunction] 											=>  <SubordinateConjunctionNode>
 EndingPunctuation 			= [punctuation]												=> 	<EndingPunctuationNode>
 
