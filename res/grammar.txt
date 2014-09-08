@@ -2,8 +2,18 @@ Grammar for parsers.
 
 All [leaves] are TerminalNodes.
 Nonterminals marked with ~ are not included in the parse tree.
-Nodes marks @ are not yet defined.
-Nodes marks % need to implemented in the parser.
+Nodes marks @ are not yet defined in the grammar.
+Nodes marks % are not yet implemented in the parser.
+
+Pattern 		Explanation
+(?=pattern) 	is a positive look-ahead assertion
+(?!pattern) 	is a negative look-ahead assertion
+(?<=pattern) 	is a positive look-behind assertion
+(?<!pattern) 	is a negative look-behind assertion
+pattern? 		matches zero or one
+pattern*		matches zero or more
+pattern+		matches one or more
+
 
 Rules 																					Node Type in Parse Tree
 
@@ -11,11 +21,15 @@ Sentence 					= Clause EndingPunctuation
 							= Clause SubordinateClause EndingPunctuation
 							% SubordinateClause @Comma Clause EndingPunctuation			=>	<SentenceNode>
 Clause 						= NounPhrase VerbPhrase										=>  <ClauseNode>
-SubordinateClause 			= SubordinateConjunction NounPhrase VerbPhrase
+SubordinateClause 			= SubordinateConjunction NounPhrase VerbPhrase 				
+							% ReleativePronoun NounPhrase Verb
+							% @AdverbPhrase NounPhrase Verb 								=>  <SubordinateClause>
 VerbPhrase 					= IntransitiveVerb							
 							= LinkingVerb AdjectivePhrase								=> 	<VerbPhraseNode>
-NounPhrase 					= Determiner Noun
-							= Noun														=> 	<NounPhraseNode>
+NounPhrase 					= Determiner Noun Appositive?
+							= Noun Appositive?											=> 	<NounPhraseNode>
+Appositive 					% Comma NounPhrase Comma									
+							% Comma NounPhrase (?=EndingPunctuation) 					=>  <AppositiveNode>
 AdjectivePhrase				= Adjective													=> 	<AdjectivePhraseNode>
 Determiner 					= Article
 							= @Demonstrative

@@ -125,6 +125,22 @@ public class SimpleParserTest
         assertTrue(sentenceNode.getChild(2) instanceof EndingPunctuationNode);
     }
 
+    @Test
+    public void appositiveMiddle()
+    {
+        // TODO Implement test
+        String sentence = "The horse, the smallest horse in the pasture, ate the apple.";
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Test
+    public void appositiveEnd()
+    {
+        // TODO Implement test
+        String sentence = "The horse ate the apple, a small fruit.";
+        throw new RuntimeException("Not implemented");
+    }
+
     private Node parse(String sentence)
     {
         List<Token> tokens = scanner.tokenize(sentence);
