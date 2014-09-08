@@ -99,6 +99,11 @@ public class HardcodedClassifier implements Classifier
     {
         switch (token.data)
         {
+        case "about":
+        case "above":
+        case "across":
+        case "after":
+        case "against":
         case "in":
             return true;
         default:
