@@ -163,6 +163,14 @@ public class SimpleParserTest
         Node rootNode = parse(sentence);
     }
 
+    @Test
+    public void NP_PP_VP_ADJP()
+    {
+        // TODO Implement test
+        String sentence = "The book on the floor is wet.";
+        Node rootNode = parse(sentence);
+    }
+
     private Node parse(String sentence)
     {
         List<Token> tokens = scanner.tokenize(sentence);
