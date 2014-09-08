@@ -30,4 +30,8 @@ public interface Classifier
 
     public boolean isIntransitiveVerb(Token token);
 
+    // Punctuation Types
+
+    public boolean isEndingPunctuation(Token token);
+
 }

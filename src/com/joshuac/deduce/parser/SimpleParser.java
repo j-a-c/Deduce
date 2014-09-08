@@ -44,10 +44,12 @@ public class SimpleParser implements Parser
             {
                 tokens = parseSentence(tokens, sentencesNode);
             }
+            // Remove sentence that could not be parsed.
             catch (ParseException e)
             {
                 StringBuilder sentence = new StringBuilder();
-                while (!tokens.isEmpty() && !isEndingPunctuation(tokens.get(FIRST_INDEX)))
+                while (!tokens.isEmpty()
+                        && !classifier.isEndingPunctuation(tokens.get(FIRST_INDEX)))
                 {
                     sentence.append(tokens.get(FIRST_INDEX).data);
                     sentence.append(SPACE);
@@ -76,7 +78,7 @@ public class SimpleParser implements Parser
             Node sentenceNode = new SentenceNode();
 
             List<Token> unparsedTokens = parseClause(tokens, sentenceNode);
-            unparsedTokens = parsePunctuation(unparsedTokens, sentenceNode);
+            unparsedTokens = parseEndingPunctuation(unparsedTokens, sentenceNode);
 
             currentNode.insertChild(newIndex, sentenceNode);
             return unparsedTokens;
@@ -237,17 +239,17 @@ public class SimpleParser implements Parser
 
     }
 
-    private List<Token> parsePunctuation(List<Token> tokens, Node currentNode)
+    private List<Token> parseEndingPunctuation(List<Token> tokens, Node currentNode)
             throws ParseException
     {
         Token currentToken = tokens.get(0);
-        if (classifier.isPunctuation(currentToken))
+        if (classifier.isEndingPunctuation(currentToken))
         {
             Token period = tokens.remove(0);
-            Node punctuationNode = new PunctuationNode();
+            Node endingPunctuationNode = new EndingPunctuationNode();
             Node periodTerminal = new TerminalNode(period);
-            punctuationNode.insertChild(0, periodTerminal);
-            currentNode.insertChild(currentNode.getNumberOfChildren(), punctuationNode);
+            endingPunctuationNode.insertChild(0, periodTerminal);
+            currentNode.insertChild(currentNode.getNumberOfChildren(), endingPunctuationNode);
             return tokens;
         }
 
@@ -291,27 +293,4 @@ public class SimpleParser implements Parser
 
     }
 
-    private boolean isEndingPunctuation(Token token)
-    {
-        // TODO Abstract into classifier using WordTypes?
-        // WordType currentWordType = classifier.classify(token);
-        //
-        // switch (currentWordType)
-        // {
-        // case PERIOD:
-        // return true;
-        // default:
-        // return false;
-        // }
-
-        switch (token.data)
-        {
-        case ("."):
-        case ("?"):
-            return true;
-        default:
-            return false;
-        }
-
-    }
 }

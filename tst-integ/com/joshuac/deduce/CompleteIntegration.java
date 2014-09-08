@@ -26,6 +26,6 @@ public class CompleteIntegration
 
         ParseTreePrinter.printParseTree(rootNode);
 
-        System.out.println("Done.");
+        System.out.println("\nDone.");
     }
 }

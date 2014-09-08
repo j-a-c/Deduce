@@ -3,29 +3,33 @@ Grammar for parsers.
 All [leaves] are TerminalNodes.
 Nonterminals marked with ~ are not included in the parse tree.
 Nodes marks @ are not yet defined.
+Nodes marks % need to implemented in the parser.
 
-Rules 													Node Type in Parse Tree
+Rules 																			Node Type in Parse Tree
 
-Sentence 			= Clause Punctuation 				=>	<SentenceNode>
-Clause 				= NounPhrase VerbPhrase
+Sentence 			= Clause EndingPunctuation
+					% Clause SubordinateClause EndingPunctuation
+					% SubordinateClause Comma Clause EndingPunctuation			=>	<SentenceNode>
+Clause 				= NounPhrase VerbPhrase										=>  <ClauseNode>
+SubordinateClause 	% @SubordinateConjunction NounPhrase VerbPhrase
 VerbPhrase 			= IntransitiveVerb							
-					= LinkingVerb AdjectivePhrase		=> 	<VerbPhraseNode>
+					= LinkingVerb AdjectivePhrase								=> 	<VerbPhraseNode>
 NounPhrase 			= Determiner Noun
-					= Noun								=> 	<NounPhraseNode>
-AdjectivePhrase		= Adjective							=> 	<AdjectivePhraseNode>
+					= Noun														=> 	<NounPhraseNode>
+AdjectivePhrase		= Adjective													=> 	<AdjectivePhraseNode>
 Determiner 			= Article
 					= @Demonstrative
 					= @Possessives
 					= @Quantifiers
 					= @Numerals
 					= @Distributives
-					= @Interrogatives					=> 	<DeterminerNode>
-Article 			= [article]							=> 	<ArticleNode>
-Noun				= [noun] 							=> 	<NounNode>
-MainVerb 			= [verb] 							=> 	<VerbNode>
-IntransitiveVerb	= [verb] 							=> 	<VerbNode>
-Adjective 			= [adjective] 						=> 	<AdjectiveNode>
-Punctuation 		= [punctuation]						=> 	<PunctuationNode>
+					= @Interrogatives											=> 	<DeterminerNode>
+Article 			= [article]													=> 	<ArticleNode>
+Noun				= [noun] 													=> 	<NounNode>
+MainVerb 			= [verb] 													=> 	<VerbNode>
+IntransitiveVerb	= [verb] 													=> 	<VerbNode>
+Adjective 			= [adjective] 												=> 	<AdjectiveNode>
+EndingPunctuation 	= [punctuation]												=> 	<EndingPunctuationNode>
 
 
 Tree Format:

@@ -65,7 +65,7 @@ public class SimpleParserTest
         assertTrue(clauseNode.getChild(1) instanceof VerbPhraseNode);
 
         Node punctuationNode = sentenceNode.getChild(1);
-        assertTrue(punctuationNode instanceof PunctuationNode);
+        assertTrue(punctuationNode instanceof EndingPunctuationNode);
         assertTrue(punctuationNode.getNumberOfChildren() == 1);
 
     }

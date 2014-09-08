@@ -142,4 +142,17 @@ public class HardcodedClassifier implements Classifier
             return false;
         }
     }
+
+    @Override
+    public boolean isEndingPunctuation(Token token)
+    {
+        switch (token.data)
+        {
+        case ("."):
+        case ("?"):
+            return true;
+        default:
+            return false;
+        }
+    }
 }
