@@ -120,6 +120,13 @@ public class SimpleParser implements Parser
             {
                 unparsedTokens = tokens.subList(1, tokens.size());
                 unparsedTokens = parseNoun(unparsedTokens, nounPhraseNode);
+
+                DeterminerNode determinerNode = new DeterminerNode();
+                ArticleNode articleNode = new ArticleNode();
+                articleNode.insertChild(0, new TerminalNode(currentToken));
+                determinerNode.insertChild(0, articleNode);
+
+                nounPhraseNode.insertChild(0, determinerNode);
                 currentNode.insertChild(currentNode.getNumberOfChildren(), nounPhraseNode);
                 return unparsedTokens;
             }
@@ -128,6 +135,8 @@ public class SimpleParser implements Parser
                 // Try next case.
             }
         }
+
+        // TODO Add the rest of determiners..
 
         if (classifier.isNoun(currentToken))
         {
