@@ -159,11 +159,24 @@ public class HardcodedClassifier implements Classifier
     }
 
     @Override
+    public boolean isComma(Token token)
+    {
+        switch (token.data)
+        {
+        case (","):
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    @Override
     public boolean isSubordinateConjunction(Token token)
     {
         switch (token.data)
         {
         case ("when"):
+        case ("When"):
         case ("whenever"):
         case ("where"):
         case ("wherever"):

@@ -105,6 +105,24 @@ public class SimpleParser implements Parser
 
         }
 
+        // Sentence = SubordinateClause ~Comma Clause EndingPunctuation
+        try
+        {
+            Node sentenceNode = new SentenceNode();
+            List<Token> unparsedTokens = parseSubordinateClause(tokens, sentenceNode);
+            unparsedTokens = parseComma(unparsedTokens, sentenceNode);
+
+            unparsedTokens = parseClause(unparsedTokens, sentenceNode);
+            unparsedTokens = parseEndingPunctuation(unparsedTokens, sentenceNode);
+
+            currentNode.insertChild(currentNode.getNumberOfChildren(), sentenceNode);
+            return unparsedTokens;
+        }
+        catch (ParseException parseException)
+        {
+
+        }
+
         throw new ParseException(tokens.get(0), WordType.UNKNOWN);
     }
 
@@ -296,6 +314,19 @@ public class SimpleParser implements Parser
             currentNode.insertChild(currentNode.getNumberOfChildren(), verbNode);
             return unparsedTokens;
 
+        }
+
+        throw new ParseException(currentToken, WordType.UNKNOWN);
+
+    }
+
+    private List<Token> parseComma(List<Token> tokens, Node currentNode) throws ParseException
+    {
+        Token currentToken = tokens.get(0);
+        if (classifier.isComma(currentToken))
+        {
+            Token comma = tokens.remove(0);
+            return tokens;
         }
 
         throw new ParseException(currentToken, WordType.UNKNOWN);

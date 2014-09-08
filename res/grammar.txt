@@ -24,7 +24,7 @@ Rules 																					Node Type in Parse Tree
 ====================================================================================================================
 Sentence 					= Clause EndingPunctuation
 							= Clause SubordinateClause EndingPunctuation
-							% SubordinateClause @Comma Clause EndingPunctuation			=>	<SentenceNode>
+							= SubordinateClause ~Comma Clause EndingPunctuation			=>	<SentenceNode>
 Clause 						= NounPhrase VerbPhrase										=>  <ClauseNode>
 SubordinateClause 			= SubordinateConjunction NounPhrase VerbPhrase 				
 							% ReleativePronoun NounPhrase Verb
@@ -33,8 +33,8 @@ VerbPhrase 					= IntransitiveVerb
 							= LinkingVerb AdjectivePhrase								=> 	<VerbPhraseNode>
 NounPhrase 					= Determiner Noun Appositive?
 							= Noun Appositive?											=> 	<NounPhraseNode>
-Appositive 					% Comma NounPhrase Comma									
-							% Comma NounPhrase (?=EndingPunctuation) 					=>  <AppositiveNode>
+Appositive 					% ~Comma NounPhrase ~Comma									
+							% ~Comma NounPhrase (?=EndingPunctuation) 					=>  <AppositiveNode>
 AdjectivePhrase				= Adjective													=> 	<AdjectivePhraseNode>
 AdverbPhrase 				% Adverb													=> 	<AdverbPhrase>
 Determiner 					= Article

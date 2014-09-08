@@ -38,4 +38,6 @@ public interface Classifier
 
     public boolean isEndingPunctuation(Token token);
 
+    public boolean isComma(Token token);
+
 }

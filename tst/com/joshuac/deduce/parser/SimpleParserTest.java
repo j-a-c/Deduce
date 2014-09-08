@@ -104,7 +104,7 @@ public class SimpleParserTest
     }
 
     @Test
-    public void clauseSubordinateClauseEndingPunctuation()
+    public void clause_subordinate_clause_endingPunctuation()
     {
         String sentence = "The ball is red when the cars race.";
 
@@ -122,6 +122,28 @@ public class SimpleParserTest
 
         assertTrue(sentenceNode.getChild(0) instanceof ClauseNode);
         assertTrue(sentenceNode.getChild(1) instanceof SubordinateClauseNode);
+        assertTrue(sentenceNode.getChild(2) instanceof EndingPunctuationNode);
+    }
+
+    @Test
+    public void subordinateClause_comma_clause_endingPunctuation()
+    {
+        String sentence = "When the cars race, the ball is red.";
+
+        Node rootNode = parse(sentence);
+
+        assertTrue(rootNode instanceof RootNode);
+        assertTrue(rootNode.getNumberOfChildren() == 1);
+
+        Node sentencesNode = rootNode.getChild(0);
+        assertTrue(sentencesNode instanceof SentencesNode);
+        assertTrue(sentencesNode.getNumberOfChildren() == 1);
+
+        Node sentenceNode = sentencesNode.getChild(0);
+        assertTrue(sentenceNode.getNumberOfChildren() == 3);
+
+        assertTrue(sentenceNode.getChild(0) instanceof SubordinateClauseNode);
+        assertTrue(sentenceNode.getChild(1) instanceof ClauseNode);
         assertTrue(sentenceNode.getChild(2) instanceof EndingPunctuationNode);
     }
 
