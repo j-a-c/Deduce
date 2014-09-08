@@ -10,6 +10,8 @@ public class HardcodedClassifier implements Classifier
     {
         switch (token.data)
         {
+        case "a":
+        case "A":
         case "the":
         case "The":
             return true;
@@ -23,9 +25,12 @@ public class HardcodedClassifier implements Classifier
     {
         switch (token.data)
         {
+        case "apple":
         case "ball":
         case "cars":
         case "color":
+        case "horse":
+        case "pasture":
             return true;
         default:
             return false;
@@ -94,6 +99,8 @@ public class HardcodedClassifier implements Classifier
     {
         switch (token.data)
         {
+        case "in":
+            return true;
         default:
             return false;
         }

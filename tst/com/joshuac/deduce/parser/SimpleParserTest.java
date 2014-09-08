@@ -152,7 +152,7 @@ public class SimpleParserTest
     {
         // TODO Implement test
         String sentence = "The horse, the smallest horse in the pasture, ate the apple.";
-        throw new RuntimeException("Not implemented");
+        Node rootNode = parse(sentence);
     }
 
     @Test
@@ -160,12 +160,13 @@ public class SimpleParserTest
     {
         // TODO Implement test
         String sentence = "The horse ate the apple, a small fruit.";
-        throw new RuntimeException("Not implemented");
+        Node rootNode = parse(sentence);
     }
 
     private Node parse(String sentence)
     {
         List<Token> tokens = scanner.tokenize(sentence);
-        return parser.parse(tokens);
+        Node rootNode = parser.parse(tokens);
+        return rootNode;
     }
 }

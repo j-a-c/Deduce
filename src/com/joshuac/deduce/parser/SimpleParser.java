@@ -205,6 +205,16 @@ public class SimpleParser implements Parser
                 unparsedTokens = tokens.subList(1, tokens.size());
                 unparsedTokens = parseNoun(unparsedTokens, nounPhraseNode);
 
+                // Appositive?
+                try
+                {
+                    unparsedTokens = parseAppositive(unparsedTokens, currentNode);
+                }
+                catch (ParseException ignoreException)
+                {
+
+                }
+
                 currentNode.insertChild(currentNode.getNumberOfChildren(), nounPhraseNode);
                 return unparsedTokens;
             }
@@ -223,6 +233,17 @@ public class SimpleParser implements Parser
                 Node nounPhraseNode = new NounPhraseNode();
 
                 unparsedTokens = parseNoun(tokens, nounPhraseNode);
+
+                // Appositive?
+                try
+                {
+                    unparsedTokens = parseAppositive(unparsedTokens, currentNode);
+                }
+                catch (ParseException ignoreException)
+                {
+
+                }
+
                 currentNode.insertChild(currentNode.getNumberOfChildren(), nounPhraseNode);
                 return unparsedTokens;
             }
@@ -234,6 +255,34 @@ public class SimpleParser implements Parser
 
         throw new ParseException(tokens.get(0), WordType.UNKNOWN);
 
+    }
+
+    private List<Token> parseAppositive(List<Token> tokens, Node currentNode) throws ParseException
+    {
+        Node appositivePhrase = new AppositivePhraseNode();
+
+        Token currentToken = tokens.get(0);
+
+        if (classifier.isComma(currentToken))
+        {
+            List<Token> unparsedTokens = parseComma(tokens, appositivePhrase);
+            unparsedTokens = parseNounPhrase(unparsedTokens, appositivePhrase);
+
+            if (classifier.isEndingPunctuation(unparsedTokens.get(0)))
+            {
+                currentNode.insertChild(currentNode.getNumberOfChildren(), appositivePhrase);
+                return unparsedTokens;
+            }
+            else if (classifier.isComma(unparsedTokens.get(0)))
+            {
+                currentNode.insertChild(currentNode.getNumberOfChildren(), appositivePhrase);
+                unparsedTokens = parseComma(unparsedTokens, appositivePhrase);
+                return unparsedTokens;
+            }
+
+        }
+
+        throw new ParseException(currentToken, WordType.UNKNOWN);
     }
 
     private List<Token> parseVerbPhrase(List<Token> tokens, Node currentNode) throws ParseException
