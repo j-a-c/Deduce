@@ -40,8 +40,6 @@ public class SimpleParserTest
         assertTrue(sentencesNode.getNumberOfChildren() == 0);
     }
 
-    // TODO Break down all these sentences completely!
-
     @Test
     public void singleSentence()
     {
@@ -52,20 +50,25 @@ public class SimpleParserTest
         assertTrue(rootNode instanceof RootNode);
         assertTrue(rootNode.getNumberOfChildren() == 1);
 
+        // [The ball is red.]
         Node sentencesNode = rootNode.getChild(0);
         assertTrue(sentencesNode instanceof SentencesNode);
         assertTrue(sentencesNode.getNumberOfChildren() == 1);
 
+        // [The ball is red][.]
         Node sentenceNode = sentencesNode.getChild(0);
         assertTrue(sentenceNode instanceof SentenceNode);
         assertTrue(sentenceNode.getNumberOfChildren() == 2);
 
+        // [The ball] [is red]
         Node clauseNode = sentenceNode.getChild(0);
         assertTrue(clauseNode instanceof ClauseNode);
         assertTrue(clauseNode.getNumberOfChildren() == 2);
         assertTrue(clauseNode.getChild(0) instanceof NounPhraseNode);
         assertTrue(clauseNode.getChild(1) instanceof VerbPhraseNode);
+        // TODO Break down
 
+        // [.]
         Node punctuationNode = sentenceNode.getChild(1);
         assertTrue(punctuationNode instanceof EndingPunctuationNode);
         assertTrue(punctuationNode.getNumberOfChildren() == 1);
@@ -82,9 +85,11 @@ public class SimpleParserTest
         assertTrue(rootNode instanceof RootNode);
         assertTrue(rootNode.getNumberOfChildren() == 1);
 
+        // [The ball is red.] [The ball is round.]
         Node sentencesNode = rootNode.getChild(0);
         assertTrue(sentencesNode instanceof SentencesNode);
         assertTrue(sentencesNode.getNumberOfChildren() == 2);
+        // TODO Break down
 
     }
 
@@ -98,9 +103,11 @@ public class SimpleParserTest
         assertTrue(rootNode instanceof RootNode);
         assertTrue(rootNode.getNumberOfChildren() == 1);
 
+        // [The cars race.]
         Node sentencesNode = rootNode.getChild(0);
         assertTrue(sentencesNode instanceof SentencesNode);
         assertTrue(sentencesNode.getNumberOfChildren() == 1);
+        // TODO Break down
     }
 
     @Test
@@ -113,15 +120,21 @@ public class SimpleParserTest
         assertTrue(rootNode instanceof RootNode);
         assertTrue(rootNode.getNumberOfChildren() == 1);
 
+        // [The ball is red when the cars race.]
         Node sentencesNode = rootNode.getChild(0);
         assertTrue(sentencesNode instanceof SentencesNode);
         assertTrue(sentencesNode.getNumberOfChildren() == 1);
 
+        // [The ball is red] [when the cars race][.]
         Node sentenceNode = sentencesNode.getChild(0);
         assertTrue(sentenceNode.getNumberOfChildren() == 3);
 
         assertTrue(sentenceNode.getChild(0) instanceof ClauseNode);
+        // TODO Break down
+
         assertTrue(sentenceNode.getChild(1) instanceof SubordinateClauseNode);
+        // TODO Break down
+
         assertTrue(sentenceNode.getChild(2) instanceof EndingPunctuationNode);
     }
 
@@ -135,15 +148,21 @@ public class SimpleParserTest
         assertTrue(rootNode instanceof RootNode);
         assertTrue(rootNode.getNumberOfChildren() == 1);
 
+        // [When the cars race, the ball is red.]
         Node sentencesNode = rootNode.getChild(0);
         assertTrue(sentencesNode instanceof SentencesNode);
         assertTrue(sentencesNode.getNumberOfChildren() == 1);
 
+        // [When the cars race,] [the ball is red][.]
         Node sentenceNode = sentencesNode.getChild(0);
         assertTrue(sentenceNode.getNumberOfChildren() == 3);
 
         assertTrue(sentenceNode.getChild(0) instanceof SubordinateClauseNode);
+        // TODO Break down
+
         assertTrue(sentenceNode.getChild(1) instanceof ClauseNode);
+        // TODO Break down
+
         assertTrue(sentenceNode.getChild(2) instanceof EndingPunctuationNode);
     }
 
@@ -166,9 +185,41 @@ public class SimpleParserTest
     @Test
     public void NP_PP_VP_ADJP()
     {
-        // TODO Implement test
         String sentence = "The book on the floor is wet.";
         Node rootNode = parse(sentence);
+
+        assertTrue(rootNode instanceof RootNode);
+        assertTrue(rootNode.getNumberOfChildren() == 1);
+
+        Node sentencesNode = rootNode.getChild(0);
+        assertTrue(sentencesNode instanceof SentencesNode);
+        assertTrue(sentencesNode.getNumberOfChildren() == 1);
+
+        // [The book on the floor is wet][.]
+        Node sentenceNode = sentencesNode.getChild(0);
+        assertTrue(sentenceNode.getNumberOfChildren() == 2);
+
+        // [The book on the floor] [is wet]
+        Node clauseNode = sentenceNode.getChild(0);
+        assertTrue(clauseNode instanceof ClauseNode);
+        System.out.println(clauseNode.getNumberOfChildren());
+        assertTrue(clauseNode.getNumberOfChildren() == 2);
+
+        // [The] [book] [on the floor]
+        Node nounPhraseNode = clauseNode.getChild(0);
+        assertTrue(nounPhraseNode instanceof NounPhraseNode);
+        assertTrue(nounPhraseNode.getNumberOfChildren() == 3);
+        // TODO Break down
+
+        // [is wet]
+        Node verbPhraseNode = clauseNode.getChild(1);
+        assertTrue(verbPhraseNode instanceof VerbPhraseNode);
+        assertTrue(verbPhraseNode.getNumberOfChildren() == 2);
+        // TODO Break down
+
+        // [.]
+        assertTrue(sentenceNode.getChild(1) instanceof EndingPunctuationNode);
+
     }
 
     private Node parse(String sentence)

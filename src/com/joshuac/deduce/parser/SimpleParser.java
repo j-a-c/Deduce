@@ -214,7 +214,7 @@ public class SimpleParser implements Parser
                 // PrepositionalPhrase?
                 try
                 {
-                    unparsedTokens = parsePrepositionalPhrase(unparsedTokens, currentNode);
+                    unparsedTokens = parsePrepositionalPhrase(unparsedTokens, nounPhraseNode);
                 }
                 catch (ParseException ignoreException)
                 {
@@ -224,7 +224,7 @@ public class SimpleParser implements Parser
                 // Appositive?
                 try
                 {
-                    unparsedTokens = parseAppositive(unparsedTokens, currentNode);
+                    unparsedTokens = parseAppositive(unparsedTokens, nounPhraseNode);
                 }
                 catch (ParseException ignoreException)
                 {
@@ -449,7 +449,7 @@ public class SimpleParser implements Parser
         Token currentToken = tokens.get(0);
         if (classifier.isComma(currentToken))
         {
-            Token comma = tokens.remove(0);
+            tokens.remove(0);
             return tokens;
         }
 

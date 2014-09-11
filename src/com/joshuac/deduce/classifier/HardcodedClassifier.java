@@ -41,8 +41,10 @@ public class HardcodedClassifier implements Classifier
         {
         case "apple":
         case "ball":
+        case "book":
         case "cars":
         case "color":
+        case "floor":
         case "horse":
         case "pasture":
             return true;
@@ -68,6 +70,8 @@ public class HardcodedClassifier implements Classifier
         {
         case "red":
         case "round":
+        case "small":
+        case "wet":
             return true;
         default:
             return false;
@@ -105,6 +109,7 @@ public class HardcodedClassifier implements Classifier
         case "after":
         case "against":
         case "in":
+        case "on":
             return true;
         default:
             return false;
