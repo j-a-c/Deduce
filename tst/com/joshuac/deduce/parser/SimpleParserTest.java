@@ -202,7 +202,6 @@ public class SimpleParserTest
         // [The book on the floor] [is wet]
         Node clauseNode = sentenceNode.getChild(0);
         assertTrue(clauseNode instanceof ClauseNode);
-        System.out.println(clauseNode.getNumberOfChildren());
         assertTrue(clauseNode.getNumberOfChildren() == 2);
 
         // [The] [book] [on the floor]
