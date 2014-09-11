@@ -190,20 +190,36 @@ public class SimpleParser implements Parser
         Token currentToken = tokens.get(0);
         List<Token> unparsedTokens;
 
-        if (classifier.isArticle(currentToken))
+        if (classifier.isDeterminer(currentToken))
         {
             try
             {
                 Node nounPhraseNode = new NounPhraseNode();
 
                 DeterminerNode determinerNode = new DeterminerNode();
-                ArticleNode articleNode = new ArticleNode();
-                articleNode.insertChild(0, new TerminalNode(currentToken));
-                determinerNode.insertChild(0, articleNode);
+
+                // TODO Add the rest of determiners..
+                if (classifier.isArticle(currentToken))
+                {
+                    ArticleNode articleNode = new ArticleNode();
+                    articleNode.insertChild(0, new TerminalNode(currentToken));
+                    determinerNode.insertChild(0, articleNode);
+                }
+
                 nounPhraseNode.insertChild(0, determinerNode);
 
                 unparsedTokens = tokens.subList(1, tokens.size());
                 unparsedTokens = parseNoun(unparsedTokens, nounPhraseNode);
+
+                // PrepositionalPhrase?
+                try
+                {
+                    unparsedTokens = parsePrepositionalPhrase(unparsedTokens, currentNode);
+                }
+                catch (ParseException ignoreException)
+                {
+
+                }
 
                 // Appositive?
                 try
@@ -224,8 +240,6 @@ public class SimpleParser implements Parser
             }
         }
 
-        // TODO Add the rest of determiners..
-
         if (classifier.isNoun(currentToken))
         {
             try
@@ -233,6 +247,16 @@ public class SimpleParser implements Parser
                 Node nounPhraseNode = new NounPhraseNode();
 
                 unparsedTokens = parseNoun(tokens, nounPhraseNode);
+
+                // PrepositionalPhrase?
+                try
+                {
+                    unparsedTokens = parsePrepositionalPhrase(unparsedTokens, currentNode);
+                }
+                catch (ParseException ignoreException)
+                {
+
+                }
 
                 // Appositive?
                 try
@@ -255,6 +279,57 @@ public class SimpleParser implements Parser
 
         throw new ParseException(tokens.get(0), WordType.UNKNOWN);
 
+    }
+
+    private List<Token> parsePrepositionalPhrase(List<Token> tokens, Node currentNode)
+            throws ParseException
+    {
+        Node prepositionalPhraseNode = new PrepositionalPhraseNode();
+        List<Token> unparsedTokens = parsePreposition(tokens, prepositionalPhraseNode);
+
+        // Modifier?
+        try
+        {
+            unparsedTokens = parseModifier(unparsedTokens, prepositionalPhraseNode);
+        }
+        catch (ParseException parseException)
+        {
+            // Ignore, no Modifier.
+        }
+
+        unparsedTokens = parseNounPhrase(unparsedTokens, prepositionalPhraseNode);
+
+        currentNode.insertChild(currentNode.getNumberOfChildren(), prepositionalPhraseNode);
+        return unparsedTokens;
+    }
+
+    private List<Token> parseModifier(List<Token> tokens, Node currentNode) throws ParseException
+    {
+        Node modifierPhraseNode = new ModifierPhraseNode();
+
+        List<Token> unparsedTokens = parsePrepositionalPhrase(tokens, modifierPhraseNode);
+
+        return unparsedTokens;
+    }
+
+    private List<Token> parsePreposition(List<Token> tokens, Node currentNode)
+            throws ParseException
+    {
+        Token currentToken = tokens.get(0);
+        if (classifier.isPreposition(currentToken))
+        {
+            Token noun = tokens.get(0);
+            List<Token> unparsedTokens = tokens.subList(1, tokens.size());
+
+            Node prepositionNode = new PrepositionNode();
+            Node prepositionTerminal = new TerminalNode(noun);
+            prepositionNode.insertChild(0, prepositionTerminal);
+
+            currentNode.insertChild(currentNode.getNumberOfChildren(), prepositionNode);
+            return unparsedTokens;
+        }
+
+        throw new ParseException(currentToken, WordType.UNKNOWN);
     }
 
     private List<Token> parseAppositive(List<Token> tokens, Node currentNode) throws ParseException

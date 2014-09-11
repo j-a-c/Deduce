@@ -29,10 +29,16 @@ Clause 						= NounPhrase VerbPhrase										=>  <ClauseNode>
 SubordinateClause 			= SubordinateConjunction NounPhrase VerbPhrase 				
 							% ReleativePronoun NounPhrase Verb
 							% AdverbPhrase NounPhrase Verb 								=>  <SubordinateClause>
-PrepositionalPhrase 		% Preposition @Modifier? NounPhrase							=>  <PrepositionalPhrase>
+PrepositionalPhrase 		% Preposition ModifierPhrase? NounPhrase					=>  <PrepositionalPhrase>
+ModifierPhrase 				% AdjectivePhrase
+							% AdverbPhrase 
+							% @AbsolutePhrase
+							% @InfinitivePhrase
+							% @ParticiplePhrase
+							= PrepositionalPhrase										=>  <ModifierPhrase> 
 VerbPhrase 					= IntransitiveVerb							
 							= LinkingVerb AdjectivePhrase								=> 	<VerbPhraseNode>
-NounPhrase 					% Determiner? Noun PrepositionalPhrase? Appositive?			=> 	<NounPhraseNode>
+NounPhrase 					= Determiner? Noun PrepositionalPhrase? Appositive?			=> 	<NounPhraseNode>
 Appositive 					= ~Comma NounPhrase ~Comma									
 							= ~Comma NounPhrase (?=EndingPunctuation) 					=>  <AppositiveNode>
 AdjectivePhrase				= Adjective													=> 	<AdjectivePhraseNode>
@@ -50,7 +56,7 @@ MainVerb 					= [verb] 													=> 	<VerbNode>
 IntransitiveVerb			= [verb] 													=> 	<VerbNode>
 Adjective 					= [adjective] 												=> 	<AdjectiveNode>
 Adverb 						= [adverb] 													=> 	<AdverbNode>
-Preposition 				% [preposition]												=> 	<PrepositionNode>
+Preposition 				= [preposition]												=> 	<PrepositionNode>
 SubordinateConjunction 		= [conjunction] 											=>  <SubordinateConjunctionNode>
 EndingPunctuation 			= [punctuation]												=> 	<EndingPunctuationNode>
 

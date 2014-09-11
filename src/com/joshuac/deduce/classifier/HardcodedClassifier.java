@@ -6,6 +6,20 @@ public class HardcodedClassifier implements Classifier
 {
 
     @Override
+    public boolean isDeterminer(Token token)
+    {
+        // TODO Add all determiner types.
+        return isArticle(token);
+    }
+
+    @Override
+    public boolean isVerb(Token token)
+    {
+        // TODO Add all verb types.
+        return isIntransitiveVerb(token) || isLinkingVerb(token);
+    }
+
+    @Override
     public boolean isArticle(Token token)
     {
         switch (token.data)
@@ -54,20 +68,6 @@ public class HardcodedClassifier implements Classifier
         {
         case "red":
         case "round":
-            return true;
-        default:
-            return false;
-        }
-    }
-
-    @Override
-    public boolean isVerb(Token token)
-    {
-        switch (token.data)
-        {
-        case "is":
-        case "race":
-        case "rolls":
             return true;
         default:
             return false;

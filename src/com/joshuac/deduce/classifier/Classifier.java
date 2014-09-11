@@ -4,7 +4,7 @@ import com.joshuac.deduce.scanner.Token;
 
 public interface Classifier
 {
-    public boolean isArticle(Token token);
+    public boolean isDeterminer(Token token);
 
     public boolean isNoun(Token token);
 
@@ -23,6 +23,10 @@ public interface Classifier
     public boolean isInterjection(Token token);
 
     public boolean isPunctuation(Token token);
+
+    // Determiner Types
+
+    public boolean isArticle(Token token);
 
     // Verb Types
 
