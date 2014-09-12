@@ -36,7 +36,8 @@ ModifierPhrase 				% AdjectivePhrase
 							% @InfinitivePhrase
 							% @ParticiplePhrase
 							= PrepositionalPhrase										=>  <ModifierPhrase> 
-VerbPhrase 					= IntransitiveVerb							
+VerbPhrase 					= IntransitiveVerb
+							% ActionVerb (<-rename this?) NounPhrase						
 							= LinkingVerb AdjectivePhrase								=> 	<VerbPhraseNode>
 NounPhrase 					= Determiner? Noun PrepositionalPhrase? Appositive?			=> 	<NounPhraseNode>
 Appositive 					= ~Comma NounPhrase ~Comma									
