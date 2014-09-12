@@ -221,6 +221,25 @@ public class SimpleParserTest
 
     }
 
+    @Test
+    public void longSentence1()
+    {
+        String sentence = "Poor Stephen, who just wanted a quick meal to get "
+                + "through his three-hour biology lab, quickly dropped his fork"
+                + " on the cafeteria tray, gagging with disgust as a tarantula"
+                + " wiggled out of his cheese omelet, a sight requiring a year"
+                + " of therapy before Stephen could eat eggs again ";
+        Node rootNode = parse(sentence);
+
+        assertTrue(rootNode instanceof RootNode);
+        assertTrue(rootNode.getNumberOfChildren() == 1);
+
+        Node sentencesNode = rootNode.getChild(0);
+        assertTrue(sentencesNode instanceof SentencesNode);
+        assertTrue(sentencesNode.getNumberOfChildren() == 1);
+        // TODO Break down
+    }
+
     private Node parse(String sentence)
     {
         List<Token> tokens = scanner.tokenize(sentence);
