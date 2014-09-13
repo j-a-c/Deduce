@@ -16,7 +16,7 @@ public class HardcodedClassifier implements Classifier
     public boolean isVerb(Token token)
     {
         // TODO Add all verb types.
-        return isIntransitiveVerb(token) || isLinkingVerb(token);
+        return isIntransitiveVerb(token) || isLinkingVerb(token) || isTransitiveVerb(token);
     }
 
     @Override
@@ -45,6 +45,7 @@ public class HardcodedClassifier implements Classifier
         case "cars":
         case "color":
         case "floor":
+        case "fruit":
         case "horse":
         case "pasture":
             return true;

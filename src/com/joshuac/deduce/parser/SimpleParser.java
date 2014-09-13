@@ -1,5 +1,6 @@
 package com.joshuac.deduce.parser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
@@ -189,7 +190,6 @@ public class SimpleParser implements Parser
     private List<Token> parseNounPhrase(List<Token> tokens, Node currentNode) throws ParseException
     {
         Token currentToken = tokens.get(0);
-        List<Token> unparsedTokens;
 
         if (classifier.isDeterminer(currentToken))
         {
@@ -207,9 +207,33 @@ public class SimpleParser implements Parser
                     determinerNode.insertChild(0, articleNode);
                 }
 
+                List<Token> unparsedTokens = tokens.subList(1, tokens.size());
+
+                // (AdjectivePhrase list ,)?
+                try
+                {
+                    unparsedTokens = parseAdjectivePhrase(unparsedTokens, nounPhraseNode);
+                }
+                catch (ParseException ignoreException)
+                {
+
+                }
+
+                while (true)
+                {
+                    try
+                    {
+                        unparsedTokens = parseComma(unparsedTokens, nounPhraseNode);
+                        unparsedTokens = parseAdjectivePhrase(unparsedTokens, nounPhraseNode);
+                    }
+                    catch (ParseException breakException)
+                    {
+                        break;
+                    }
+                }
+
                 nounPhraseNode.insertChild(0, determinerNode);
 
-                unparsedTokens = tokens.subList(1, tokens.size());
                 unparsedTokens = parseNoun(unparsedTokens, nounPhraseNode);
 
                 // PrepositionalPhrase?
@@ -246,13 +270,38 @@ public class SimpleParser implements Parser
             try
             {
                 Node nounPhraseNode = new NounPhraseNode();
+                List<Token> unparsedTokens = new ArrayList<Token>(tokens);
+
+                // (AdjectivePhrase list ,)?
+                try
+                {
+                    unparsedTokens = parseAdjectivePhrase(unparsedTokens, nounPhraseNode);
+
+                }
+                catch (ParseException ignoreException)
+                {
+
+                }
+
+                while (true)
+                {
+                    try
+                    {
+                        unparsedTokens = parseComma(unparsedTokens, nounPhraseNode);
+                        unparsedTokens = parseAdjectivePhrase(unparsedTokens, nounPhraseNode);
+                    }
+                    catch (ParseException breakException)
+                    {
+                        break;
+                    }
+                }
 
                 unparsedTokens = parseNoun(tokens, nounPhraseNode);
 
                 // PrepositionalPhrase?
                 try
                 {
-                    unparsedTokens = parsePrepositionalPhrase(unparsedTokens, currentNode);
+                    unparsedTokens = parsePrepositionalPhrase(unparsedTokens, nounPhraseNode);
                 }
                 catch (ParseException ignoreException)
                 {
@@ -262,7 +311,7 @@ public class SimpleParser implements Parser
                 // Appositive?
                 try
                 {
-                    unparsedTokens = parseAppositive(unparsedTokens, currentNode);
+                    unparsedTokens = parseAppositive(unparsedTokens, nounPhraseNode);
                 }
                 catch (ParseException ignoreException)
                 {

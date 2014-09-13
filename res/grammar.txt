@@ -9,15 +9,16 @@ Nodes marks @ are not yet defined in the grammar.
 Nodes marks % are not yet implemented in the parser.
 
 
-Pattern 		Explanation
+Pattern 			Explanation
 ================================================================================================================================================
-(?=pattern) 	is a positive look-ahead assertion
-(?!pattern) 	is a negative look-ahead assertion
-(?<=pattern) 	is a positive look-behind assertion
-(?<!pattern) 	is a negative look-behind assertion
-pattern? 		matches zero or one
-pattern*		matches zero or more
-pattern+		matches one or more
+(?=pattern) 		is a positive look-ahead assertion
+(?!pattern) 		is a negative look-ahead assertion
+(?<=pattern) 		is a positive look-behind assertion
+(?<!pattern) 		is a negative look-behind assertion
+pattern? 			matches zero or one
+pattern*			matches zero or more
+pattern+			matches one or more
+(pattern list ,)	(pattern (',' pattern)*)
 
 
 Rules 																												Node Type in Parse Tree
@@ -36,7 +37,7 @@ ModifierPhrase 				% AdjectivePhrase
 							% @InfinitivePhrase
 							% @ParticiplePhrase
 							= PrepositionalPhrase																	=>  <ModifierPhrase>
-NounPhrase 					% Determiner? (AdjectivePhrase list ,) Noun PrepositionalPhrase? Appositive?			=> 	<NounPhraseNode> 
+NounPhrase 					% Determiner? (AdjectivePhrase list ,)? Noun PrepositionalPhrase? Appositive?			=> 	<NounPhraseNode> 
 VerbPhrase 					= IntransitiveVerb
 							= TransitiveVerb NounPhrase						
 							= LinkingVerb AdjectivePhrase															=> 	<VerbPhraseNode>

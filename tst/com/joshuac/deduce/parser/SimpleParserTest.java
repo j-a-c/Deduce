@@ -202,6 +202,100 @@ public class SimpleParserTest
         // TODO Implement test
         String sentence = "The horse, the smallest horse in the pasture, ate the apple.";
         Node rootNode = parse(sentence);
+
+        assertTrue(rootNode instanceof RootNode);
+        assertTrue(rootNode.getNumberOfChildren() == 1);
+
+        Node sentencesNode = rootNode.getChild(0);
+        assertTrue(sentencesNode instanceof SentencesNode);
+        assertTrue(sentencesNode.getNumberOfChildren() == 1);
+
+        // [The horse, the smallest horse in the pasture, ate the apple][.]
+        Node sentenceNode = sentencesNode.getChild(0);
+        assertTrue(sentenceNode.getNumberOfChildren() == 2);
+        assertTrue(sentenceNode.getChild(0) instanceof ClauseNode);
+        assertTrue(sentenceNode.getChild(1) instanceof EndingPunctuationNode);
+
+        // [The horse, the smallest horse in the pasture, ate the apple]
+        Node clauseNode = sentenceNode.getChild(0);
+        assertTrue(clauseNode.getNumberOfChildren() == 2);
+        assertTrue(clauseNode.getChild(0) instanceof NounPhraseNode);
+        assertTrue(clauseNode.getChild(1) instanceof VerbPhraseNode);
+
+        // [The][horse][, the smallest horse in the pasture,]
+        Node nounPhraseNode = clauseNode.getChild(0);
+        assertTrue(nounPhraseNode.getNumberOfChildren() == 3);
+        assertTrue(nounPhraseNode.getChild(0) instanceof DeterminerNode);
+        assertTrue(nounPhraseNode.getChild(1) instanceof NounNode);
+        assertTrue(nounPhraseNode.getChild(2) instanceof AppositivePhraseNode);
+
+        // [The]
+        Node determinerNode = nounPhraseNode.getChild(0);
+        assertTrue(determinerNode.getNumberOfChildren() == 1);
+        assertTrue(determinerNode.getChild(0) instanceof ArticleNode);
+        Node articleNode = determinerNode.getChild(0);
+        assertTrue(articleNode.getNumberOfChildren() == 1);
+        assertTrue(articleNode.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(articleNode.getChild(0), "The"));
+
+        // [horse]
+        Node nounNode = nounPhraseNode.getChild(1);
+        assertTrue(nounNode.getNumberOfChildren() == 1);
+        assertTrue(nounNode.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(nounNode.getChild(0), "horse"));
+
+        // [the smallest horse in the pasture]
+        Node appositivePhraseNode = nounPhraseNode.getChild(2);
+        assertTrue(appositivePhraseNode.getNumberOfChildren() == 1);
+        assertTrue(appositivePhraseNode.getChild(0) instanceof NounPhraseNode);
+
+        // [the] [smallest] [horse] [in the pasture]
+        Node nounPhraseNode2 = appositivePhraseNode.getChild(0);
+        assertTrue(nounPhraseNode2.getNumberOfChildren() == 4);
+        assertTrue(nounPhraseNode2.getChild(0) instanceof DeterminerNode);
+        // TODO Break down
+        assertTrue(nounPhraseNode2.getChild(1) instanceof AdjectivePhraseNode);
+        assertTrue(nounPhraseNode2.getChild(2) instanceof NounNode);
+        assertTrue(nounPhraseNode2.getChild(3) instanceof PrepositionalPhraseNode);
+
+        // [ate] [the apple]
+        Node verbPhrase = clauseNode.getChild(1);
+        assertTrue(verbPhrase.getNumberOfChildren() == 2);
+        assertTrue(verbPhrase.getChild(0) instanceof VerbNode);
+        assertTrue(verbPhrase.getChild(1) instanceof NounPhraseNode);
+
+        // [ate]
+        Node verbNode = verbPhrase.getChild(0);
+        assertTrue(verbNode.getNumberOfChildren() == 1);
+        assertTrue(verbNode.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(verbNode.getChild(0), "ate"));
+
+        // [the apple]
+        Node nounPhraseNode1 = verbPhrase.getChild(1);
+        assertTrue(nounPhraseNode1.getNumberOfChildren() == 2);
+        assertTrue(nounPhraseNode1.getChild(0) instanceof DeterminerNode);
+        assertTrue(nounPhraseNode1.getChild(1) instanceof NounNode);
+
+        // [the]
+        Node determinerNode1 = nounPhraseNode1.getChild(0);
+        assertTrue(determinerNode1.getNumberOfChildren() == 1);
+        assertTrue(determinerNode1.getChild(0) instanceof ArticleNode);
+        Node articleNode1 = determinerNode1.getChild(0);
+        assertTrue(articleNode1.getNumberOfChildren() == 1);
+        assertTrue(articleNode1.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(articleNode1.getChild(0), "the"));
+
+        // [apple]
+        nounNode = nounPhraseNode1.getChild(1);
+        assertTrue(nounNode.getNumberOfChildren() == 1);
+        assertTrue(nounNode.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(nounNode.getChild(0), "apple"));
+
+        // [.]
+        Node endingPunctuationNode = sentenceNode.getChild(1);
+        assertTrue(endingPunctuationNode.getNumberOfChildren() == 1);
+        assertTrue(endingPunctuationNode.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(endingPunctuationNode.getChild(0), "."));
     }
 
     @Test
@@ -210,6 +304,51 @@ public class SimpleParserTest
         // TODO Implement test
         String sentence = "The horse ate the apple, a small fruit.";
         Node rootNode = parse(sentence);
+
+        assertTrue(rootNode instanceof RootNode);
+        assertTrue(rootNode.getNumberOfChildren() == 1);
+
+        Node sentencesNode = rootNode.getChild(0);
+        assertTrue(sentencesNode instanceof SentencesNode);
+        assertTrue(sentencesNode.getNumberOfChildren() == 1);
+
+        // [The horse ate the apple, a small fruit][.]
+        Node sentenceNode = sentencesNode.getChild(0);
+        assertTrue(sentenceNode.getNumberOfChildren() == 2);
+        assertTrue(sentenceNode.getChild(0) instanceof ClauseNode);
+        assertTrue(sentenceNode.getChild(1) instanceof EndingPunctuationNode);
+
+        // [The horse ate the apple, a small fruit]
+        Node clauseNode = sentenceNode.getChild(0);
+        assertTrue(clauseNode.getNumberOfChildren() == 2);
+        assertTrue(clauseNode.getChild(0) instanceof NounPhraseNode);
+        assertTrue(clauseNode.getChild(1) instanceof VerbPhraseNode);
+
+        // [The horse]
+        // TODO Break down
+
+        // [ate the apple, a small fruit]
+        Node verbNode = clauseNode.getChild(1);
+        assertTrue(verbNode.getNumberOfChildren() == 2);
+        assertTrue(verbNode.getChild(0) instanceof VerbNode);
+        assertTrue(verbNode.getChild(1) instanceof NounPhraseNode);
+
+        // [ate]
+        // TODO Break down
+
+        // [the][apple][, a small fruit]
+        Node nounPhraseNode = verbNode.getChild(1);
+        assertTrue(nounPhraseNode.getNumberOfChildren() == 3);
+        // TODO Break down
+        assertTrue(nounPhraseNode.getChild(0) instanceof DeterminerNode);
+        assertTrue(nounPhraseNode.getChild(1) instanceof NounNode);
+        assertTrue(nounPhraseNode.getChild(2) instanceof AppositivePhraseNode);
+
+        // [.]
+        Node endingPunctuationNode = sentenceNode.getChild(1);
+        assertTrue(endingPunctuationNode.getNumberOfChildren() == 1);
+        assertTrue(endingPunctuationNode.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(endingPunctuationNode.getChild(0), "."));
     }
 
     @Test
