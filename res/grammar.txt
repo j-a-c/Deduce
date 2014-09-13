@@ -35,11 +35,11 @@ ModifierPhrase 				% AdjectivePhrase
 							% @AbsolutePhrase
 							% @InfinitivePhrase
 							% @ParticiplePhrase
-							= PrepositionalPhrase																	=>  <ModifierPhrase> 
+							= PrepositionalPhrase																	=>  <ModifierPhrase>
+NounPhrase 					% Determiner? (AdjectivePhrase list ,) Noun PrepositionalPhrase? Appositive?			=> 	<NounPhraseNode> 
 VerbPhrase 					= IntransitiveVerb
-							% TransitiveVerb NounPhrase						
+							= TransitiveVerb NounPhrase						
 							= LinkingVerb AdjectivePhrase															=> 	<VerbPhraseNode>
-NounPhrase 					% Determiner? (AdjectivePhrase list ,) Noun PrepositionalPhrase? Appositive?			=> 	<NounPhraseNode>
 Appositive 					= ~Comma NounPhrase ~Comma									
 							= ~Comma NounPhrase (?=EndingPunctuation) 												=>  <AppositiveNode>
 AdjectivePhrase				= Adjective																				=> 	<AdjectivePhraseNode>

@@ -71,6 +71,7 @@ public class HardcodedClassifier implements Classifier
         case "red":
         case "round":
         case "small":
+        case "smallest":
         case "wet":
             return true;
         default:
@@ -156,6 +157,18 @@ public class HardcodedClassifier implements Classifier
         switch (token.data)
         {
         case "race":
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isTransitiveVerb(Token token)
+    {
+        switch (token.data)
+        {
+        case "ate":
             return true;
         default:
             return false;

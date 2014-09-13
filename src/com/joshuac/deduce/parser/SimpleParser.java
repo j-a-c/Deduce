@@ -109,6 +109,7 @@ public class SimpleParser implements Parser
         try
         {
             Node sentenceNode = new SentenceNode();
+
             List<Token> unparsedTokens = parseSubordinateClause(tokens, sentenceNode);
             unparsedTokens = parseComma(unparsedTokens, sentenceNode);
 
@@ -363,14 +364,16 @@ public class SimpleParser implements Parser
 
     private List<Token> parseVerbPhrase(List<Token> tokens, Node currentNode) throws ParseException
     {
-        Node verbPhraseNode = new VerbPhraseNode();
 
         Token currentToken = tokens.get(0);
         if (classifier.isIntransitiveVerb(currentToken))
         {
             try
             {
+                Node verbPhraseNode = new VerbPhraseNode();
+
                 List<Token> unparsedTokens = parseVerb(tokens, verbPhraseNode);
+
                 currentNode.insertChild(currentNode.getNumberOfChildren(), verbPhraseNode);
                 return unparsedTokens;
             }
@@ -384,8 +387,29 @@ public class SimpleParser implements Parser
         {
             try
             {
+                Node verbPhraseNode = new VerbPhraseNode();
+
                 List<Token> unparsedTokens = parseVerb(tokens, verbPhraseNode);
                 unparsedTokens = parseAdjectivePhrase(unparsedTokens, verbPhraseNode);
+
+                currentNode.insertChild(currentNode.getNumberOfChildren(), verbPhraseNode);
+                return unparsedTokens;
+            }
+            catch (ParseException parseException)
+            {
+                // Try next case.
+            }
+        }
+
+        if (classifier.isTransitiveVerb(currentToken))
+        {
+            try
+            {
+                Node verbPhraseNode = new VerbPhraseNode();
+
+                List<Token> unparsedTokens = parseVerb(tokens, verbPhraseNode);
+                unparsedTokens = parseNounPhrase(unparsedTokens, verbPhraseNode);
+
                 currentNode.insertChild(currentNode.getNumberOfChildren(), verbPhraseNode);
                 return unparsedTokens;
             }
@@ -402,14 +426,15 @@ public class SimpleParser implements Parser
     private List<Token> parseAdjectivePhrase(List<Token> tokens, Node currentNode)
             throws ParseException
     {
-        Node adjectivePhraseNode = new AdjectivePhraseNode();
-
         Token currentToken = tokens.get(0);
         if (classifier.isAdjective(currentToken))
         {
             try
             {
+                Node adjectivePhraseNode = new AdjectivePhraseNode();
+
                 List<Token> unparsedTokens = parseAdjective(tokens, adjectivePhraseNode);
+
                 currentNode.insertChild(currentNode.getNumberOfChildren(), adjectivePhraseNode);
                 return unparsedTokens;
             }
@@ -450,8 +475,7 @@ public class SimpleParser implements Parser
         Token currentToken = tokens.get(0);
         if (classifier.isComma(currentToken))
         {
-            tokens.remove(0);
-            return tokens;
+            return tokens.subList(1, tokens.size());
         }
 
         throw new ParseException(currentToken, WordType.UNKNOWN);

@@ -34,6 +34,8 @@ public interface Classifier
 
     public boolean isIntransitiveVerb(Token token);
 
+    public boolean isTransitiveVerb(Token token);
+
     // Conjunction Types
 
     public boolean isSubordinateConjunction(Token token);
