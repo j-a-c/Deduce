@@ -5,7 +5,7 @@ import com.joshuac.deduce.scanner.Token;
 
 public class TerminalNode extends Node
 {
-    String data;
+    public String data;
 
     public TerminalNode(final Token token)
     {

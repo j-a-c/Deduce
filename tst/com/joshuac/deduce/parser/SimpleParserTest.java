@@ -66,6 +66,19 @@ public class SimpleParserTest
         assertTrue(clauseNode.getNumberOfChildren() == 2);
         assertTrue(clauseNode.getChild(0) instanceof NounPhraseNode);
         assertTrue(clauseNode.getChild(1) instanceof VerbPhraseNode);
+
+        // [The ball]
+        Node nounPhraseNode = clauseNode.getChild(0);
+        assertTrue(nounPhraseNode.getNumberOfChildren() == 2);
+        assertTrue(nounPhraseNode.getChild(0) instanceof DeterminerNode);
+        assertTrue(nounPhraseNode.getChild(1) instanceof NounNode);
+        // TODO Break down
+
+        // [is red]
+        Node verbPhraseNode = clauseNode.getChild(1);
+        assertTrue(verbPhraseNode.getNumberOfChildren() == 2);
+        assertTrue(verbPhraseNode.getChild(0) instanceof VerbNode);
+        assertTrue(verbPhraseNode.getChild(1) instanceof AdjectivePhraseNode);
         // TODO Break down
 
         // [.]
@@ -107,7 +120,24 @@ public class SimpleParserTest
         Node sentencesNode = rootNode.getChild(0);
         assertTrue(sentencesNode instanceof SentencesNode);
         assertTrue(sentencesNode.getNumberOfChildren() == 1);
+
+        Node sentenceNode = sentencesNode.getChild(0);
+        assertTrue(sentenceNode.getNumberOfChildren() == 2);
+        assertTrue(sentenceNode.getChild(0) instanceof ClauseNode);
+        assertTrue(sentenceNode.getChild(1) instanceof EndingPunctuationNode);
+
+        // [The cars race]
+        Node clauseNode = sentenceNode.getChild(0);
+        assertTrue(clauseNode.getNumberOfChildren() == 2);
+        assertTrue(clauseNode.getChild(0) instanceof NounPhraseNode);
+        assertTrue(clauseNode.getChild(1) instanceof VerbPhraseNode);
         // TODO Break down
+
+        // [.]
+        Node endingPunctuationNode = sentenceNode.getChild(1);
+        assertTrue(endingPunctuationNode.getNumberOfChildren() == 1);
+        assertTrue(endingPunctuationNode.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(endingPunctuationNode.getChild(0), "."));
     }
 
     @Test
@@ -208,16 +238,69 @@ public class SimpleParserTest
         Node nounPhraseNode = clauseNode.getChild(0);
         assertTrue(nounPhraseNode instanceof NounPhraseNode);
         assertTrue(nounPhraseNode.getNumberOfChildren() == 3);
-        // TODO Break down
+        assertTrue(nounPhraseNode.getChild(0) instanceof DeterminerNode);
+        assertTrue(nounPhraseNode.getChild(1) instanceof NounNode);
+        assertTrue(nounPhraseNode.getChild(2) instanceof PrepositionalPhraseNode);
+
+        // TODO [The]
+
+        // TODO [book]
+
+        // [on] [the floor]
+        Node prepositionalPhraseNode = nounPhraseNode.getChild(2);
+        assertTrue(prepositionalPhraseNode.getNumberOfChildren() == 2);
+        assertTrue(prepositionalPhraseNode.getChild(0) instanceof PrepositionNode);
+        assertTrue(prepositionalPhraseNode.getChild(1) instanceof NounPhraseNode);
+
+        // [the floor]
+        nounPhraseNode = prepositionalPhraseNode.getChild(1);
+        assertTrue(nounPhraseNode.getNumberOfChildren() == 2);
+        assertTrue(nounPhraseNode.getChild(0) instanceof DeterminerNode);
+        assertTrue(nounPhraseNode.getChild(1) instanceof NounNode);
+
+        // [the]
+        Node determinerNode = nounPhraseNode.getChild(0);
+        assertTrue(determinerNode.getNumberOfChildren() == 1);
+        assertTrue(determinerNode.getChild(0) instanceof ArticleNode);
+        Node articleNode = determinerNode.getChild(0);
+        assertTrue(articleNode.getNumberOfChildren() == 1);
+        assertTrue(articleNode.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(articleNode.getChild(0), "the"));
+
+        // [floor]
+        Node nounNode = nounPhraseNode.getChild(1);
+        assertTrue(nounNode.getNumberOfChildren() == 1);
+        assertTrue(nounNode.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(nounNode.getChild(0), "floor"));
 
         // [is wet]
         Node verbPhraseNode = clauseNode.getChild(1);
         assertTrue(verbPhraseNode instanceof VerbPhraseNode);
         assertTrue(verbPhraseNode.getNumberOfChildren() == 2);
-        // TODO Break down
+        assertTrue(verbPhraseNode.getChild(0) instanceof VerbNode);
+        assertTrue(verbPhraseNode.getChild(1) instanceof AdjectivePhraseNode);
+
+        // [is]
+        Node verbNode = verbPhraseNode.getChild(0);
+        assertTrue(verbNode.getNumberOfChildren() == 1);
+        assertTrue(verbNode.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(verbNode.getChild(0), "is"));
+
+        // [wet]
+        Node adjectivePhraseNode = verbPhraseNode.getChild(1);
+        assertTrue(adjectivePhraseNode.getNumberOfChildren() == 1);
+        assertTrue(adjectivePhraseNode.getChild(0) instanceof AdjectiveNode);
+        Node adjectiveNode = adjectivePhraseNode.getChild(0);
+        assertTrue(adjectiveNode.getNumberOfChildren() == 1);
+        assertTrue(adjectiveNode.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(adjectiveNode.getChild(0), "wet"));
 
         // [.]
         assertTrue(sentenceNode.getChild(1) instanceof EndingPunctuationNode);
+        Node endingPunctuationNode = sentenceNode.getChild(1);
+        assertTrue(endingPunctuationNode.getNumberOfChildren() == 1);
+        assertTrue(endingPunctuationNode.getChild(0) instanceof TerminalNode);
+        assertTrue(checkTerminalData(endingPunctuationNode.getChild(0), "."));
 
     }
 
@@ -260,5 +343,10 @@ public class SimpleParserTest
         List<Token> tokens = scanner.tokenize(sentence);
         Node rootNode = parser.parse(tokens);
         return rootNode;
+    }
+
+    private boolean checkTerminalData(Node node, String data)
+    {
+        return (((TerminalNode) node).data.equals(data));
     }
 }

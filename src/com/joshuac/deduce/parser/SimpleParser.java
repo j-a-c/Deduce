@@ -309,6 +309,7 @@ public class SimpleParser implements Parser
 
         List<Token> unparsedTokens = parsePrepositionalPhrase(tokens, modifierPhraseNode);
 
+        currentNode.insertChild(currentNode.getNumberOfChildren(), modifierPhraseNode);
         return unparsedTokens;
     }
 
